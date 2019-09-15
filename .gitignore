@@ -1,0 +1,6 @@
+.idea/
+venv/
+.ipynb_checkpoints/
+__pycache__/
+*.wip
+*.wip.*
