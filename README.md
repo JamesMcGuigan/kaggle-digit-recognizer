@@ -5,15 +5,31 @@ Learn computer vision fundamentals with the famous MNIST data
 - https://www.kaggle.com/c/digit-recognizer
 
 
+# Google Cloud OCR
+
+This was intended as a cheat method, map the csv data back into pngs, then use the Google Vision API to conduct OCR
+
+Doesn't seem to work!
+
+Problems:
+- Cost: $1.50 per 1000 requests * 28,000 test images = $42 cost
+- Google OCR doesn't seem to like white-on-black single char text images
+- Inverting the images (black on white) doesn't improve Google OCR  
+- API Explorer: 
+  https://cloud.google.com/vision/docs/quickstart?apix_params=%7B%22resource%22%3A%7B%22requests%22%3A%5B%7B%22features%22%3A%5B%7B%22type%22%3A%22DOCUMENT_TEXT_DETECTION%22%7D%5D%2C%22image%22%3A%7B%22source%22%3A%7B%22imageUri%22%3A%22gs%3A%2F%2Fkaggle-digit-recognizer%2Fdata-images%2Ftest%2F1.png%22%7D%7D%7D%5D%7D%7D
+  - features.type = DOCUMENT_TEXT_DETECTION
+  - image.source.imageUri = gs://kaggle-digit-recognizer/data-images/test/1.png
+
+
 ## Installation
 ```
-# ./requirements.sh           # Install/Update VirtualEnv
-# source venv/bin/activate    # Source VirtualEnv
-# jupyter lab                 # Explore Jupyter Notebooks                  
-# ./main.py                   # Execute Data Pipeline
-
+yarn
+yarn start
+==
 kaggle competitions download -c digit-recognizer -p ./data/
 node --experimental-modules src/gcloud-ocr/csv2png.js
+gsutil -m cp -r data-images/ gs://kaggle-digit-recognizer/
 
 kaggle competitions submit -c digit-recognizer -f submissions/submission.csv -m "message"
 ```
+

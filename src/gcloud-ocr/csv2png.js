@@ -25,6 +25,8 @@ export function grayscale2image(data, size, filename=null) {
             image
                 .scan(0, 0, image.bitmap.width, image.bitmap.height, function (x, y, idx) {
                     let grayscale = data[y][x];
+                    if( size.invert ) { grayscale = 255 - grayscale; }
+
                     ['red', 'green', 'blue'].forEach((color, offset) => {
                         this.bitmap.data[idx + offset] = grayscale;
                     });
@@ -50,6 +52,7 @@ export function grayscale2image(data, size, filename=null) {
 const size = {
     w: 28,
     h: 28,
+    invert: true
 };
 // ['test'].forEach((testtrain) => {  // time = 60min
 ['test', 'train'].forEach((testtrain) => {
