@@ -1,6 +1,22 @@
+# IDE
 .idea/
-venv/
+.DS_Store
 .ipynb_checkpoints/
 __pycache__/
+
+
+# Work In Progress
 *.wip
 *.wip.*
+
+
+# Libraries
+venv/
+node_modules/
+
+# Data
+data/
+data-images/
+
+
+

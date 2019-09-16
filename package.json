@@ -1,0 +1,24 @@
+{
+  "name": "kaggle-digit-recognizer",
+  "version": "1.0.0",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JamesMcGuigan/kaggle-digit-recognizer.git"
+  },
+  "scripts": {
+    "start":    "yarn run download; yarn run csv2png",
+    "download": "kaggle competitions download -c digit-recognizer -p ./data/",
+    "csv2png":  "node --experimental-modules src/gcloud-ocr/csv2png.js"
+  },
+  "dependencies": {
+    "@google-cloud/vision": "^1.3.0",
+    "bluebird": "^3.5.5",
+    "csv": "^5.1.2",
+    "csv-parse": "^4.4.5",
+    "fs-jetpack": "^2.2.2",
+    "jimp": "^0.8.2",
+    "lodash": "^4.17.15",
+    "neat-csv": "^5.1.0"
+  }
+}
