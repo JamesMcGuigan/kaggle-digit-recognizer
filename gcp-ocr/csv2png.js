@@ -1,9 +1,8 @@
-import parse from "csv-parse";
-import jetpack from "fs-jetpack";
-import Promise from 'bluebird';
-import fs from 'fs';
 import _ from 'lodash';
-import jimp from 'jimp';
+import fs from 'fs';
+import Jimp from 'jimp';
+import parse from "csv-parse";
+import Promise from 'bluebird';
 
 /**
  *
@@ -21,7 +20,7 @@ export function grayscale2image(data, size, filename=null) {
             .chunk(size.w)
             .value()
         ;
-        new jimp(size.w, size.h, 255, (error, image) => {
+        new Jimp(size.w, size.h, 255, (error, image) => {
             image
                 .scan(0, 0, image.bitmap.width, image.bitmap.height, function (x, y, idx) {
                     let grayscale = data[y][x];
@@ -52,18 +51,18 @@ export function grayscale2image(data, size, filename=null) {
 const size = {
     w: 28,
     h: 28,
-    invert: true
+    invert: false
 };
 // ['test'].forEach((testtrain) => {  // time = 60min
 ['test', 'train'].forEach((testtrain) => {
     let imageID = 0;
-    fs.createReadStream(`./data/${testtrain}.csv`)
+    fs.createReadStream(`../data/${testtrain}.csv`)
         .pipe(parse({
             columns: true,
         }))
         .on('data', (data) => {
             imageID += 1;
-            let filename = `./data-images/${testtrain}/${imageID}.png`;
+            let filename = `../data-images/${testtrain}/${imageID}.png`;
             fs.exists(filename, (exists) => {
                 if( !exists ) { grayscale2image(data, size, filename); }  
             });
