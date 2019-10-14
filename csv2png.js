@@ -56,13 +56,13 @@ const size = {
 // ['test'].forEach((testtrain) => {  // time = 60min
 ['test', 'train'].forEach((testtrain) => {
     let imageID = 0;
-    fs.createReadStream(`../data/${testtrain}.csv`)
+    fs.createReadStream(`./data/${testtrain}.csv`)
         .pipe(parse({
             columns: true,
         }))
         .on('data', (data) => {
             imageID += 1;
-            let filename = `../data-images/${testtrain}/${imageID}.png`;
+            let filename = `./data/images/${testtrain}/${data.label || ''}/${imageID}.png`;  // Imagenet format
             fs.exists(filename, (exists) => {
                 if( !exists ) { grayscale2image(data, size, filename); }  
             });

@@ -3,6 +3,18 @@
 Learn computer vision fundamentals with the famous MNIST data
 - https://www.kaggle.com/c/digit-recognizer
 
+# Preprocessing
+
+```
+yarn
+yarn download
+==
+kaggle competitions download -c digit-recognizer -p ./data/
+unzip data/digit-recognizer.zip -d data
+node --experimental-modules csv2png.js
+# kaggle competitions submit -c digit-recognizer -f submissions/submission.csv -m "message"
+```
+
 
 # Google Cloud OCR
 
@@ -21,14 +33,6 @@ Problems:
 
 
 ```
-cd gcp-ocr 
-yarn
-yarn start
-==
-kaggle competitions download -c digit-recognizer -p ./data/
-node --experimental-modules csv2png.js
-gsutil -m cp -r data-images/ gs://kaggle-digit-recognizer/
-
-# kaggle competitions submit -c digit-recognizer -f submissions/submission.csv -m "message"
+gsutil -m cp -r data/images/ gs://kaggle-digit-recognizer/
 ```
 
