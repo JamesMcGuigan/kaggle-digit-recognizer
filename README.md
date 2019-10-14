@@ -3,8 +3,11 @@
 Learn computer vision fundamentals with the famous MNIST data
 - https://www.kaggle.com/c/digit-recognizer
 
-# Preprocessing
+# Submissions
+- Score: 0.09371 | Rank: 2509/2521 | ./submissions/fastai-resnet18-fit2.csv
 
+
+# Image Preprocessing
 ```
 yarn
 yarn download
@@ -15,8 +18,14 @@ node --experimental-modules csv2png.js
 # kaggle competitions submit -c digit-recognizer -f submissions/submission.csv -m "message"
 ```
 
+# FastAI Jupyter Notebooks
+```
+pip3 install -r requirements.in
+jupyter lab 
+``` 
 
-# Google Cloud OCR
+
+# Broken: Google Cloud OCR
 
 This was intended as a cheat method, map the csv data back into pngs, then use the Google Vision API to conduct OCR
 
