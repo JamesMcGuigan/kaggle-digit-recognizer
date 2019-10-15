@@ -4,6 +4,8 @@ Learn computer vision fundamentals with the famous MNIST data
 - https://www.kaggle.com/c/digit-recognizer
 
 # Submissions
+- Score: 0.09614 | Rank: 2517/2529 | ./submissions/fastai-resnet18-fit_one_cycle_30.csv
+- Score: 0.09614 | Rank: 2517/2529 | ./submissions/fastai-resnet18-fit10.csv
 - Score: 0.09371 | Rank: 2509/2521 | ./submissions/fastai-resnet18-fit2.csv
 
 
