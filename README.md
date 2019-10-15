@@ -18,6 +18,7 @@ kaggle competitions download -c digit-recognizer -p ./data/
 unzip data/digit-recognizer.zip -d data
 node --experimental-modules csv2png.js
 # kaggle competitions submit -c digit-recognizer -f submissions/submission.csv -m "message"
+# kaggle competitions submissions -c digit-recognizer
 ```
 
 # FastAI Jupyter Notebooks
