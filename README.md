@@ -3,13 +3,18 @@
 Learn computer vision fundamentals with the famous MNIST data
 - https://www.kaggle.com/c/digit-recognizer
 
+NOTE: training accuracy inside notebooks is claiming to be 98%, 
+but submission to Kaggle is returning scores that are actually worse than random
+this would seem to suggest some form of image/id mismatch
+
 # Submissions
+- Score: 0.09671 | Rank: 2487/2500 | ./submissions/random.csv
 - Score: 0.09614 | Rank: 2517/2529 | ./submissions/fastai-resnet18-fit_one_cycle_30.csv
 - Score: 0.09614 | Rank: 2517/2529 | ./submissions/fastai-resnet18-fit10.csv
 - Score: 0.09371 | Rank: 2509/2521 | ./submissions/fastai-resnet18-fit2.csv
 
 
-# Image Preprocessing
+# Image Preprocessing 
 ```
 yarn
 yarn download
