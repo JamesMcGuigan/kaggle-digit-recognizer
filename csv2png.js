@@ -3,9 +3,9 @@ import fs from 'fs';
 import Jimp from 'jimp';
 import parse from "csv-parse";
 import Promise from 'bluebird';
+import countLinesInFile from 'count-lines-in-file';
 
 /**
- *
  * @param   {number[]} data
  * @param   {object}   size
  * @param   {string}   filename
@@ -55,19 +55,25 @@ const size = {
 };
 // ['test'].forEach((testtrain) => {  // time = 60min
 ['test', 'train'].forEach((testtrain) => {
-    let imageID = 0;
-    fs.createReadStream(`./data/${testtrain}.csv`)
-        .pipe(parse({
-            columns: true,
-        }))
-        .on('data', (data) => {
-            imageID += 1;
-            let filename = `./data/images/${testtrain}/${data.label || ''}/${imageID}.png`;  // Imagenet format
-            fs.exists(filename, (exists) => {
-                if( !exists ) { grayscale2image(data, size, filename); }  
+    // BUGFIX: ImageDataBunch sorts filenames alphabetically, not numerically, causing image/id mismatch
+    countLinesInFile(`./data/${testtrain}.csv`, (error, lineCount) => {
+        const lineCountDigits = Math.ceil(Math.log10( lineCount+1));
+        const padID = (imageID) => String(imageID).padStart(lineCountDigits, '0');
+
+        let imageID = 0;
+        fs.createReadStream(`./data/${testtrain}.csv`)
+            .pipe(parse({
+                columns: true,
+            }))
+            .on('data', (data) => {
+                imageID += 1;
+                let filename = `./data/images/${testtrain}/${data.label || ''}/${padID(imageID)}.png`;
+                fs.exists(filename, (exists) => {
+                    if( !exists ) { grayscale2image(data, size, filename); }
+                });
+            })
+            .on('end', () => {
+                console.info("END");
             });
-        })
-        .on('end', () => {
-            console.info("END");
-        });
+    });
 });
