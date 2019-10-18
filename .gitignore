@@ -15,8 +15,10 @@ venv/
 node_modules/
 
 # Data
-data/
+#data/
 data/images/
-
+#data/images/test/
+#data/images/train/
+#!data/images/models/
 
 
