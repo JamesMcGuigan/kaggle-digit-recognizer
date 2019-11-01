@@ -19,7 +19,7 @@
     "bluebird": "^3.5.5",
     "count-lines-in-file": "^1.1.0",
     "csv": "^5.1.2",
-    "csv-parse": "^4.4.5",
+    "csv-parse": "^4.4.6",
     "fs-jetpack": "^2.2.2",
     "jimp": "^0.8.2",
     "lodash": "^4.17.15",
