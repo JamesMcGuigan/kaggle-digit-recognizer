@@ -67,8 +67,10 @@ const size = {
             }))
             .on('data', (data) => {
                 imageID += 1;
-                let filename = `./data/images/${testtrain}/${data.label || ''}/${padID(imageID)}.png`;
+                let filename = `./data/images/${testtrain}/${data.label || ''}/${padID(imageID)}.png`;   // Imagenet format
+                filename     = filename.replace(/\/+/g, "/");                                            // strip double // in path
                 fs.exists(filename, (exists) => {
+                    console.log( (exists ? "skip:  " : "write: ") + filename );
                     if( !exists ) { grayscale2image(data, size, filename); }
                 });
             })

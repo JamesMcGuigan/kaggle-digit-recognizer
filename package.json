@@ -7,11 +7,11 @@
     "url": "https://github.com/JamesMcGuigan/kaggle-digit-recognizer.git"
   },
   "scripts": {
-    "clean": "rm -rvf data ../data-images/",
-    "start": "yarn run download;",
-    "download": "kaggle competitions download -c digit-recognizer -p data; unzip data/digit-recognizer.zip -d data; yarn run csv2png",
-    "csv2png": "node --experimental-modules csv2png.js",
-    "model-random": "node --experimental-modules model-random.js",
+    "clean":            "rm -rvf data ../data-images/",
+    "start":            "yarn run download;",
+    "download":         "kaggle competitions download -c digit-recognizer -p data; unzip data/digit-recognizer.zip -d data; yarn run csv2png",
+    "csv2png":          "node --experimental-modules preprocessing/csv2png.js",
+    "model-random":     "node --experimental-modules method-random/model-random.js",
     "copy-gcp-storage": "gsutil -m cp -r data-images gs://kaggle-digit-recognizer/"
   },
   "dependencies": {

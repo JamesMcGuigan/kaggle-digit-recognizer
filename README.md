@@ -14,16 +14,15 @@ this would seem to suggest some form of image/id mismatch
 - Score: 0.09371 | Rank: 2509/2521 | ./submissions/fastai-resnet18-fit2.csv
 
 
-# Image Preprocessing 
+# Image Preprocessing
 ```
 yarn
 yarn download
 ==
 kaggle competitions download -c digit-recognizer -p ./data/
 unzip data/digit-recognizer.zip -d data
-node --experimental-modules csv2png.js
+node --experimental-modules preprocessing/csv2png.js
 # kaggle competitions submit -c digit-recognizer -f submissions/submission.csv -m "message"
-# kaggle competitions submissions -c digit-recognizer
 ```
 
 # FastAI Jupyter Notebooks
