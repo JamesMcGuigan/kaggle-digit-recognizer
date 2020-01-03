@@ -2,10 +2,8 @@ import os
 
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
-import tensorflow as tf
 import tensorflow.keras as keras
-
+from sklearn.model_selection import train_test_split
 
 os.chdir( os.path.dirname( os.path.abspath(__file__) ) )
 print(os.getcwd())
@@ -15,6 +13,7 @@ dataset = {
     "valid": None,
     "test":  pd.read_csv('../data/test.csv'),
 }
+# dataset["train"] = dataset["train"].sample(frac=0.01)
 dataset["train"], dataset["valid"] = train_test_split( dataset["train"], test_size=0.2 )
 
 
@@ -25,7 +24,7 @@ for key in list(dataset.keys()):
         dataset[key]
             .drop('label', axis=1, errors='ignore')
             .to_numpy()
-            .reshape((-1, image_hw, image_hw))
+            .reshape((-1, image_hw, image_hw, 1))
             .astype('float32') / 255    # normalize to range: [0,1]
     )
     if 'label' in dataset[key]:
@@ -39,7 +38,7 @@ for key in list(dataset.keys()):
 
 if __name__ == "__main__":
     for key in dataset.keys():
-        print(key, dataset[key].shape)
-    for key in dataset.keys():
         print( key )
         print( dataset[key] )
+    for key in dataset.keys():
+        print(key, dataset[key].shape)

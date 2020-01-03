@@ -8,10 +8,10 @@ but submission to Kaggle is returning scores that are actually worse than random
 this would seem to suggest some form of image/id mismatch
 
 # Submissions
+- Score: 0.99657 | Rank: ??? /2500 | ./submissions/fastai-resnet18-u100.csv - fastai: resnet18 + fit_one_cycle(50, 5e-2)
+- Score: 0.71128 | Rank: 2194/2269 | ./submissions/keras.csv - first attempt
 - Score: 0.09671 | Rank: 2487/2500 | ./submissions/random.csv
-- Score: 0.09614 | Rank: 2517/2529 | ./submissions/fastai-resnet18-fit_one_cycle_30.csv
-- Score: 0.09614 | Rank: 2517/2529 | ./submissions/fastai-resnet18-fit10.csv
-- Score: 0.09371 | Rank: 2509/2521 | ./submissions/fastai-resnet18-fit2.csv
+
 
 
 # Preprocessing
@@ -31,14 +31,21 @@ node --experimental-modules preprocessing/csv2png.js
 ## FastAI Jupyter Notebooks
 ```
 pip3 install -r requirements.in
-PYTHONPATH='.' ./venv/bin/python3 method_keras/main.py 
+PYTHONPATH='.' nice time python3 method_keras/main.py 
 ``` 
+This method currently produces the best state-of-the-art results, with a top score of 0.99657 
+
 
 ## Keras
 ```
 pip3 install -r requirements.in
  
-``` 
+```
+
+Keras is a lower level library than fastai. 
+
+Initial implementation works as a proof of concept, but the first attempt only produces a score of 0.71128
+
 
 
 ## Broken: Google Cloud OCR
