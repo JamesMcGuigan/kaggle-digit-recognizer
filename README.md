@@ -14,7 +14,8 @@ this would seem to suggest some form of image/id mismatch
 - Score: 0.09371 | Rank: 2509/2521 | ./submissions/fastai-resnet18-fit2.csv
 
 
-# Image Preprocessing
+# Preprocessing
+# csv2png: Image Generation
 ```
 yarn
 yarn download
@@ -25,14 +26,22 @@ node --experimental-modules preprocessing/csv2png.js
 # kaggle competitions submit -c digit-recognizer -f submissions/submission.csv -m "message"
 ```
 
-# FastAI Jupyter Notebooks
+# Methods
+
+## FastAI Jupyter Notebooks
 ```
 pip3 install -r requirements.in
-jupyter lab 
+PYTHONPATH='.' ./venv/bin/python3 method_keras/main.py 
+``` 
+
+## Keras
+```
+pip3 install -r requirements.in
+ 
 ``` 
 
 
-# Broken: Google Cloud OCR
+## Broken: Google Cloud OCR
 
 This was intended as a cheat method, map the csv data back into pngs, then use the Google Vision API to conduct OCR
 
