@@ -28,7 +28,7 @@ google-auth-oauthlib==0.4.1  # via tensorboard
 google-auth==1.10.0       # via google-auth-oauthlib, tensorboard
 google-pasta==0.1.8       # via tensorflow
 grpcio==1.26.0            # via tensorboard, tensorflow
-h5py==2.10.0              # via keras-applications
+h5py==2.10.0              # via keras, keras-applications
 idna==2.8                 # via requests
 importlib-metadata==0.23  # via jsonschema
 ipykernel==5.1.2          # via notebook
@@ -44,8 +44,9 @@ jupyter-core==4.6.0       # via jupyter-client, nbconvert, nbformat, notebook
 jupyterlab-server==1.0.6  # via jupyterlab
 jupyterlab==1.1.4
 kaggle==1.5.6
-keras-applications==1.0.8  # via tensorflow
-keras-preprocessing==1.1.0  # via tensorflow
+keras-applications==1.0.8  # via keras, tensorflow
+keras-preprocessing==1.1.0  # via keras, tensorflow
+keras==2.3.1
 kiwisolver==1.1.0         # via matplotlib
 markdown==3.1.1           # via tensorboard
 markupsafe==1.1.1         # via jinja2
@@ -57,7 +58,7 @@ nbconvert==5.6.0          # via notebook
 nbformat==4.4.0           # via nbconvert, notebook
 notebook==6.0.1           # via jupyterlab, jupyterlab-server
 numexpr==2.7.0            # via fastai
-numpy==1.17.2             # via blis, bottleneck, fastai, h5py, keras-applications, keras-preprocessing, matplotlib, numexpr, opt-einsum, pandas, scikit-learn, scipy, spacy, tensorboard, tensorflow, thinc, torch, torchvision
+numpy==1.17.2             # via blis, bottleneck, fastai, h5py, keras, keras-applications, keras-preprocessing, matplotlib, numexpr, opt-einsum, pandas, scikit-learn, scipy, spacy, tensorboard, tensorflow, thinc, torch, torchvision
 nvidia-ml-py3==7.352.0    # via fastai
 oauthlib==3.1.0           # via requests-oauthlib
 opt-einsum==3.1.0         # via tensorflow
@@ -83,15 +84,15 @@ pyrsistent==0.15.4        # via jsonschema
 python-dateutil==2.8.0    # via jupyter-client, kaggle, matplotlib, pandas
 python-slugify==3.0.6     # via kaggle
 pytz==2019.3              # via pandas
-pyyaml==5.1.2             # via fastai
+pyyaml==5.1.2             # via fastai, keras
 pyzmq==18.1.0             # via jupyter-client, notebook
 requests-oauthlib==1.3.0  # via google-auth-oauthlib
 requests==2.22.0          # via fastai, kaggle, requests-oauthlib, spacy, tensorboard
 rsa==4.0                  # via google-auth
 scikit-learn==0.22        # via sklearn
-scipy==1.3.1              # via fastai, scikit-learn
+scipy==1.3.1              # via fastai, keras, scikit-learn
 send2trash==1.5.0         # via notebook
-six==1.12.0               # via absl-py, bleach, cycler, google-auth, google-pasta, grpcio, h5py, jsonschema, kaggle, keras-preprocessing, packaging, prompt-toolkit, protobuf, pyrsistent, python-dateutil, tensorboard, tensorflow, torchvision, traitlets
+six==1.12.0               # via absl-py, bleach, cycler, google-auth, google-pasta, grpcio, h5py, jsonschema, kaggle, keras, keras-preprocessing, packaging, prompt-toolkit, protobuf, pyrsistent, python-dateutil, tensorboard, tensorflow, torchvision, traitlets
 sklearn==0.0
 soupsieve==1.9.4          # via beautifulsoup4
 spacy==2.2.1              # via fastai
