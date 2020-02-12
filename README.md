@@ -12,7 +12,19 @@ this would seem to suggest some form of image/id mismatch
 - Score: 0.71128 | Rank: 2194/2269 | ./submissions/keras.csv - first attempt
 - Score: 0.09671 | Rank: 2487/2500 | ./submissions/random.csv
 
+# Python Install
+CUDA Install: [CUDA.md](CUDA.md)
+```
+# Python3 + Pip + Venv
+sudo apt-get install python3 python3-pip python3-venv
 
+# Build Tools
+sudo apt-get install build-essential libssl-dev libffi-dev python-dev
+
+# Node
+sudo apt install nodejs 
+npm imstall -g yarn
+```
 
 # Preprocessing
 # csv2png: Image Generation
@@ -31,7 +43,7 @@ node --experimental-modules preprocessing/csv2png.js
 ## FastAI Jupyter Notebooks
 ```
 pip3 install -r requirements.in
-PYTHONPATH='.' nice time python3 method_keras/main.py 
+jupyter lab
 ``` 
 This method currently produces the best state-of-the-art results, with a top score of 0.99657 
 
@@ -39,13 +51,18 @@ This method currently produces the best state-of-the-art results, with a top sco
 ## Keras
 ```
 pip3 install -r requirements.in
- 
+CUDA_VISIBLE_DEVICES=""   # run with CPU instead of GPU
+PYTHONPATH='.' nice time python3 method_keras/main.py 
 ```
 
 Keras is a lower level library than fastai. 
 
 Initial implementation works as a proof of concept, but the first attempt only produces a score of 0.71128
 
+Timings:
+- 2011 Macbook Pro CPU = 72s/epoc = 868s
+- 2019 Razer Blade CPU = 23s/epoc = 287s ( 3x improvement)
+- GeForce GTX 1060 GPU =  4s/epoc =  46s (+6x improvement)
 
 
 ## Broken: Google Cloud OCR
