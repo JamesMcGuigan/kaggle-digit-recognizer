@@ -46,5 +46,5 @@ new Promise((resolve, reject) => {
         }
     }
     let accuracy = score / (guesses.length - 1);
-    console.log(`Accuracy = ${score}/${guesses.length - 1} = ${Math.round(accuracy * 100, 4)}%`);
+    console.log(`Accuracy = ${score}/${guesses.length - 1} = ${(accuracy * 100).toFixed(2)}%`);
 });
