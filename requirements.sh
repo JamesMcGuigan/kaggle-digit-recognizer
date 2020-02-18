@@ -76,7 +76,7 @@ for OS in UNIX WINDOWS; do
     source $VENV_ACTIVATE
     if [[ $OS == 'UNIX' ]]; then
         pip install --upgrade pip pip-tools
-        pip-compile
+        pip-compile -v --generate-hashes
         pip install -r ./requirements.txt
         pip-sync
     fi;
