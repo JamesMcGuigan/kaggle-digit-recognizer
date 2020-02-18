@@ -1,6 +1,17 @@
-fastai
+pip-tools
+pip-review
+
+numpy<1.17
+pandas
 jupyterlab
 kaggle
+
+fastai
 sklearn
-tensorflow
 keras
+tensorflow==2.1.0
+tensorflow-gpu    # requires   numpy<1.17
+# tf-nightly-gpu  # works with numpy==1.19
+# tensorflow-cpu  # breaks CUDA | fix: rm ~/.local; pip install -r requirements.in
+
+GPUtil
