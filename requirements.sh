@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+# Utility script to automate python virtualenv creation/update from ./requirements.in 
+# Input:  ./requirements.in
+# Output: ./requirements.txt + ./venv/ + ./venv_windows/
+#
+# Redownload latest version of script:
+# wget https://raw.githubusercontent.com/JamesMcGuigan/requirements.sh/master/requirements.sh -O requirements.sh
+
 set -x
 cd $(dirname $(readlink -f ${BASH_SOURCE[0]}));  # OSX requires: brew install coreutils
 
@@ -63,9 +70,9 @@ for OS in UNIX WINDOWS; do
     # Use pip and python from inside the virtualenv
     source $VENV_ACTIVATE
     if [[ $OS == 'UNIX' ]]; then
-        $PIP install --upgrade pip pip-tools
+        pip install --upgrade pip pip-tools
         pip-compile
-        $PIP install -r ./requirements.txt
+        pip install -r ./requirements.txt
         pip-sync
     fi;
     if [[ $OS == 'WINDOWS' ]]; then
