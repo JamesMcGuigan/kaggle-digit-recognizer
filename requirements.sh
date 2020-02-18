@@ -22,6 +22,11 @@ for OS in UNIX WINDOWS; do
             VIRTUALENV="`which virtualenv` -p $PYTHON"
         fi
         if [[ $PYTHON_VERSION == 3 ]]; then
+            # Ensure Ubuntu dependencies are installed
+            if [[ `command -v apt` ]]; then for PACKAGE in python3 python3-pip python3-venv; do
+              if [[ ! `dpkg -l | grep -w $PACKAGE` ]]; then sudo apt install $PACKAGE; fi;
+            done; fi;
+
             PYTHON=`which python3`
             PIP=`   which pip3`
             VIRTUALENV="$PYTHON -m venv"
