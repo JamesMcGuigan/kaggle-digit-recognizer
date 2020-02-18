@@ -1,4 +1,32 @@
-# WSL Python
+# Dependencies Install
+```
+# Python3 + Pip + Venv
+sudo apt-get install python3 python3-pip python3-venv
+./requirements.sh
+
+# Build Tools
+sudo apt-get install build-essential libssl-dev libffi-dev python-dev
+
+# Node
+sudo apt install nodejs 
+npm imstall -g yarn
+```
+
+# ANACONDA Install
+https://askubuntu.com/a/841224
+```
+CONTREPO=https://repo.continuum.io/archive/
+# Stepwise filtering of the html at $CONTREPO
+# Get the topmost line that matches our requirements, extract the file name.
+ANACONDAURL=$(wget -q -O - $CONTREPO index.html | grep "Anaconda3-" | grep "Linux" | grep "86_64" | head -n 1 | cut -d \" -f 2)
+wget -O ~/Downloads/anaconda.sh $CONTREPO$ANACONDAURL
+bash ~/Downloads/anaconda.sh
+echo export PATH="$PATH:./.anaconda3/bin" > ~/.bashrc
+```
+
+---
+
+# Win10 WSL Python
 
 NOTE: CUDA does not work on Win10 WSL - so use Windows Binaries with Alias
 - http://www.erogol.com/using-windows-wsl-for-deep-learning-development/
@@ -13,7 +41,6 @@ alias nosetests="nosetests.exe"
 alias pip="pip.exe"
 alias nvidia-smi="/mnt/c/Program\ Files/NVIDIA\ Corporation/NVSMI/nvidia-smi.exe"
 ```
-
 ---
 # Ubuntu CUDA 
 

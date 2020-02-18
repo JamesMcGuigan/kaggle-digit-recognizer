@@ -1,71 +1,84 @@
-# Kaggle Competition - Digit Recognizer
+# Kaggle Competition - MNIST Digit Recognizer
 
 Learn computer vision fundamentals with the famous MNIST data
 - https://www.kaggle.com/c/digit-recognizer
 
-NOTE: training accuracy inside notebooks is claiming to be 98%, 
-but submission to Kaggle is returning scores that are actually worse than random
-this would seem to suggest some form of image/id mismatch
+Installation Instructions: [README_CUDA.md](README_CUDA.md)
+
+---
 
 # Submissions
 - Score: 0.99657 | Rank: ??? /2500 | ./submissions/fastai-resnet18-u100.csv - fastai: resnet18 + fit_one_cycle(50, 5e-2)
 - Score: 0.71128 | Rank: 2194/2269 | ./submissions/keras.csv - first attempt
 - Score: 0.09671 | Rank: 2487/2500 | ./submissions/random.csv
 
-# Python Install
-CUDA Install: [CUDA.md](CUDA.md)
-```
-# Python3 + Pip + Venv
-sudo apt-get install python3 python3-pip python3-venv
-
-# Build Tools
-sudo apt-get install build-essential libssl-dev libffi-dev python-dev
-
-# Node
-sudo apt install nodejs 
-npm imstall -g yarn
-```
+---
 
 # Preprocessing
-# csv2png: Image Generation
+## csv2png: Image Generation
 ```
-yarn
-yarn download
-==
 kaggle competitions download -c digit-recognizer -p ./data/
 unzip data/digit-recognizer.zip -d data
 node --experimental-modules preprocessing/csv2png.js
 # kaggle competitions submit -c digit-recognizer -f submissions/submission.csv -m "message"
 ```
 
+Converts the CSV data into a filesystem directory tree of png images for better 
+visibility and debugging, as well as for compatibility purposes with fastai ImageDataBunch 
+
+NOTE: 
+- This is a slower (IO bound) method compared to accessing raw numeric CSV data. 
+- Dropbox crashes when trying to sync 2,016,000 individual files
+
+---
+
+
 # Methods
+
+## Random Guess Method
+```
+node --experimental-modules  src/random/random.js 
+wrote: ./submissions/random.csv
+Accuracy = 2846/28000 = 10.16%
+```
+
+The random guess method provides a statistical noise baseline, which as expected averages around 10% accuracy
+
 
 ## FastAI Jupyter Notebooks
 ```
-pip3 install -r requirements.in
-jupyter lab
+node ./preprocessing/csv2png.js 
+jupyter lab  # 1_fastai-transfer-learning.ipynb
 ``` 
-This method currently produces the best state-of-the-art results, with a top score of 0.99657 
-
+This method utilizes CNN resnet18 with transfer learning and currently produces the best state-of-the-art results, with a top score of 0.99657 
+ 
 
 ## Keras
-```
-pip3 install -r requirements.in
-CUDA_VISIBLE_DEVICES=""   # run with CPU instead of GPU
-PYTHONPATH='.' nice time python3 method_keras/main.py 
-```
-
 Keras is a lower level library than fastai. 
 
-Initial implementation works as a proof of concept, but the first attempt only produces a score of 0.71128
+### Keras Example Code - MNIST CNN 
+```
+CUDA_VISIBLE_DEVICES=""   # run with CPU instead of GPU
+PYTHONPATH='.'            # needed for running local code 
+time -p python3 src/keras/examples/keras_example_mnist_cnn.py 
+Test loss: 0.6942943648338318
+Test accuracy: 0.8384
+```
+
+Initial benchmark implementation works as a proof of concept. 
+[Documentation code](https://keras.io/examples/mnist_cnn/) claims 99.25% test accuracy after 12 epochs, 
+but running the code locally only produces a score of 83.84%
 
 Timings:
-- 2011 Macbook Pro CPU = 72s/epoc = 868s
-- 2019 Razer Blade CPU = 23s/epoc = 287s ( 3x improvement)
-- GeForce GTX 1060 GPU =  4s/epoc =  46s (+6x improvement)
+- 2011 Macbook Pro CPU = 89s/epoc = 1.5ms/sample = 1070s
+- 2019 Razer Blade CPU = 36s/epoc = 605us/sample =  443s ( 2.4x improvement over OSX)
+- GeForce GTX 1060 GPU =  5s/epoc =  85us/sample =   66s ( 6.7x improvement over CPU)
 
 
-## Broken: Google Cloud OCR
+
+# Failed Attempts
+
+## Google Cloud OCR - Broken
 
 This was intended as a cheat method, map the csv data back into pngs, then use the Google Vision API to conduct OCR
 
@@ -80,8 +93,8 @@ Problems:
   - features.type = DOCUMENT_TEXT_DETECTION
   - image.source.imageUri = gs://kaggle-digit-recognizer/data-images/test/1.png
 
-
 ```
+node ./preprocessing/csv2png.js 
 gsutil -m cp -r data/images/ gs://kaggle-digit-recognizer/
 ```
 
