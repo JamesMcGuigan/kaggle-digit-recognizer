@@ -19,7 +19,7 @@ Installation Instructions: [README_CUDA.md](README_CUDA.md)
 ```
 kaggle competitions download -c digit-recognizer -p ./data/
 unzip data/digit-recognizer.zip -d data
-node --experimental-modules preprocessing/csv2png.js
+node --experimental-modules src/utils/csv2png.js
 # kaggle competitions submit -c digit-recognizer -f submissions/submission.csv -m "message"
 ```
 
