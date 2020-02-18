@@ -68,6 +68,7 @@ packaging==19.2           # via fastai, pip-review
 pandas==0.25.1
 pandocfilters==1.4.2      # via nbconvert
 parso==0.5.1              # via jedi
+pbr==5.4.4                # via testresources
 pexpect==4.7.0            # via ipython
 pickleshare==0.7.5        # via ipython
 pillow==6.2.0             # via fastai, torchvision
@@ -107,6 +108,7 @@ tensorflow==2.1.0
 termcolor==1.1.0          # via tensorflow, tensorflow-gpu
 terminado==0.8.2          # via notebook
 testpath==0.4.2           # via nbconvert
+testresources==2.0.1
 text-unidecode==1.3       # via python-slugify
 thinc==7.1.1              # via spacy
 torch==1.3.0              # via fastai, torchvision
