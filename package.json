@@ -10,8 +10,8 @@
     "clean":            "rm -rvf data ../data-images/",
     "start":            "yarn run download;",
     "download":         "kaggle competitions download -c digit-recognizer -p data; unzip data/digit-recognizer.zip -d data; yarn run csv2png",
-    "csv2png":          "node --experimental-modules preprocessing/csv2png.js",
-    "model-random":     "node --experimental-modules method_random/random.js",
+    "csv2png":          "node --experimental-modules src/preprocessing/csv2png.js",
+    "model-random":     "node --experimental-modules src/random/random.js",
     "copy-gcp-storage": "gsutil -m cp -r data-images gs://kaggle-digit-recognizer/"
   },
   "dependencies": {

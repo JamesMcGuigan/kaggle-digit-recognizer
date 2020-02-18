@@ -8,7 +8,7 @@ import time
 from tensorflow.keras.layers import Conv2D, MaxPooling2D
 from tensorflow.keras.layers import Dense, Dropout, Flatten
 from tensorflow.keras.models import Sequential
-from method_keras.dataset import dataset
+from src.keras import dataset
 
 timer_start = time.time()
 

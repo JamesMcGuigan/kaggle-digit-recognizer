@@ -16,8 +16,9 @@ node_modules/
 
 # Data
 #data/
-#data/images/
-#data/images/test/
-#data/images/train/
+data/images/
+data/images/models/
+data/images/test/
+data/images/train/
 
 

@@ -9,9 +9,9 @@ os.chdir( os.path.dirname( os.path.abspath(__file__) ) )
 print(os.getcwd())
 
 dataset = {
-    "train": pd.read_csv('../data/train.csv'),
+    "train": pd.read_csv('../../data/train.csv'),
     "valid": None,
-    "test":  pd.read_csv('../data/test.csv'),
+    "test":  pd.read_csv('../../data/test.csv'),
 }
 # dataset["train"] = dataset["train"].sample(frac=0.01)
 dataset["train"], dataset["valid"] = train_test_split( dataset["train"], test_size=0.2 )
