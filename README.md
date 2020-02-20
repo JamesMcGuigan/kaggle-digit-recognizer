@@ -74,7 +74,19 @@ Timings:
 - 2019 Razer Blade CPU = 36s/epoc = 605us/sample =  443s ( 2.4x improvement over OSX)
 - GeForce GTX 1060 GPU =  5s/epoc =  85us/sample =   66s ( 6.7x improvement over CPU)
 
+### Keras Example Syntax
+```
+python3 src/keras/examples/main.py 
+```
+Working examples of Keras syntax: SequentialCNN, FunctionalCNN, ClassCNN, ClassNN 
 
+BUG: ClassCNN accuracy is only 36% compared to 75% for SequentialCNN / FunctionalCNN
+```
+SequentialCNN   validation: | loss: 1.3756675141198293 | accuracy: 0.7430952
+FunctionalCNN   validation: | loss: 1.4285654685610816 | accuracy: 0.7835714
+ClassCNN        validation: | loss: 1.9851970995040167 | accuracy: 0.36214286
+ClassNN         validation: | loss: 2.302224604288737  | accuracy: 0.09059524
+```
 
 # Failed Attempts
 
