@@ -47,7 +47,7 @@ alias nvidia-smi="/mnt/c/Program\ Files/NVIDIA\ Corporation/NVSMI/nvidia-smi.exe
 Use explicitly supported LTS version: Ubuntu 18.04 or Fedora 29 
 - https://docs.nvidia.com/cuda/cuda-installation-guide-linux/index.html
 
-### Install NVIDIA Drivers 
+## Install NVIDIA Drivers 
 ```
 ubuntu-drivers devices
 sudo ubuntu-drivers autoinstall
@@ -58,12 +58,18 @@ Or GUI: Software & Updates -> Additional Drivers -> nvidia-driver-440
 
 Be sure to enter UEFI password in Grub on reboot
 
-### Install CUDA 
+## Install CUDA 
 https://www.tensorflow.org/install/gpu#install_cuda_with_apt
 
-NOTE: Tensorflow 2 does not support CUDA 9
+#### Tensorflow / CUDA version combinations
+- Tensorflow v2.x does not support CUDA 9 (Ubuntu 18.4 default)
+- Tensorflow v2.1.0 works with CUDA 10.1 
+- Tensorflow v2.0.0 works with CUDA 10.0  
+- See for full list: https://www.tensorflow.org/install/source#tested_build_configurations  
 
-CUDA 10.1 (installed as per tensorflow docs) throws `can't find libcublas.so.10.0` errors.
+#### Changing Cuda Versions
+
+Tensorflow v2.0.0 + CUDA 10.1 (installed as per tensorflow docs) throws `can't find libcublas.so.10.0` errors.
 The libs exist in `/usr/local/cuda-10.1/targets/x86_64-linux/lib/` but are misnamed. 
 
 Workaround is to modify instructions to downgrade to CUDA 10.0 or upgrade to CUDA 10.2
@@ -87,7 +93,7 @@ sudo apt-get install -y --no-install-recommends \
     libnvinfer-plugin6=6.0.1-1+cuda10.0;
 ```
 
-Upgrading to CUDA 10.2 seems to suffer from the same problem
+Upgrading to CUDA 10.2 suffers from the same problem
 ```
 # BROKEN: Upgrade to CUDA-10.2 - has the same problem
 # use `apt show -a libcudnn7 libnvinfer7` to find 10.2 compatable version numbers
@@ -101,14 +107,14 @@ sudo apt-get install -y --no-install-recommends \
     libnvinfer-plugin7=7.0.0-1+cuda10.2;
 ```
 
-### Test GPU Visibility in Python
+## Test GPU Visibility in Python
 ```
 python3
 >>> import tensorflow as tf
 >>> tf.test.is_gpu_available()
 ``` 
 
-### FutureWarnings
+## FutureWarnings
 - https://github.com/tensorflow/tensorflow/issues/30427
 
 Two solutions:
