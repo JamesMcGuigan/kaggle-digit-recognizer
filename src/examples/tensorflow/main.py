@@ -9,10 +9,7 @@ import tensorflow.keras as keras
 import time
 
 from src.dataset import DataSet
-from src.keras.examples.ClassCNN import ClassCNN
-from src.keras.examples.ClassNN import ClassNN
-from src.keras.examples.FunctionalCNN import FunctionalCNN
-from src.keras.examples.SequentialCNN import SequentialCNN
+from src.examples.tensorflow import FunctionalCNN, SequentialCNN, ClassCNN, ClassNN
 from src.utils.csv import predict_to_csv
 
 timer_start = time.time()
