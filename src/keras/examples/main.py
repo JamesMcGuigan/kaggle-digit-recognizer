@@ -5,7 +5,6 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '1'  # 0, 1, 2, 3  # Disable Tensortflow Logging
 os.chdir( os.path.dirname( os.path.abspath(__file__) ) )
 
-import tensorflow as tf
 import tensorflow.keras as keras
 import time
 
@@ -15,8 +14,6 @@ from src.keras.examples.ClassNN import ClassNN
 from src.keras.examples.FunctionalCNN import FunctionalCNN
 from src.keras.examples.SequentialCNN import SequentialCNN
 from src.utils.csv import predict_to_csv
-
-tf.random.set_seed(42)
 
 timer_start = time.time()
 
