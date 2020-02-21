@@ -2,18 +2,26 @@
 # Source: https://keras.io/examples/mnist_cnn/
 # Trains a simple convnet on the MNIST dataset.
 #
-# Gets to 99.25% test accuracy after 12 epochs |  16 seconds per epoch on a GRID K520 GPU.
-# ACTUAL= 84.71% test accuracy after 12 epochs | 122 seconds per epoch on a Intel i7 @ 2.5GHz
-# (there is still a lot of margin for parameter tuning).
+# DOCS claim: 99.25% test accuracy after 12 epochs |  16 seconds per epoch on a GRID K520 GPU.
+# Actual:
+#                          TF_CPP_MIN_LOG_LEVEL=1 time -p src/examples/keras/tf_keras_example_mnist_cnn.py
+# KERAS_BACKEND=tensorflow TF_CPP_MIN_LOG_LEVEL=1 time -p src/examples/keras/keras_example_mnist_cnn.py
+# KERAS_BACKEND=theano THEANO_FLAGS=device=cuda0  time -p src/examples/keras/keras_example_mnist_cnn.py
+# KERAS_BACKEND=cntk                              time -p src/examples/keras/keras_example_mnist_cnn.py  # ImportError: libmpi_cxx.so.1
+#
+#   Test accuracy: 99.11% |  78s =   6s/epoc + 101us/step | Using tf.keras + TensorFlow GPU backend
+#   Test accuracy: 99.11% |  78s =   6s/epoc + 101us/step | Using keras    + TensorFlow GPU backend
+#   Test accuracy: 99.05% |3844s = 300s/epoc +   5ms/step | Using keras    + Theano CPU backend
 #
 
 from __future__ import print_function
+
 import tensorflow.keras as keras
-from tensorflow.keras.datasets import mnist
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Flatten
-from tensorflow.keras.layers import Conv2D, MaxPooling2D
 from tensorflow.keras import backend as K
+from tensorflow.keras.datasets import mnist
+from tensorflow.keras.layers import Conv2D, MaxPooling2D
+from tensorflow.keras.layers import Dense, Dropout, Flatten
+from tensorflow.keras.models import Sequential
 
 batch_size  = 128
 num_classes = 10
