@@ -24,7 +24,7 @@ class ClassCNN(tf.keras.Model):
         self.flatten    = Flatten()
         self.dense1     = Dense(128, activation=tf.nn.relu)
         self.dropout2   = Dropout(0.5, name='dropout2')
-        self.activation = Dense(self._output_shape, activation=tf.nn.relu)
+        self.activation = Dense(self._output_shape, activation=tf.nn.softmax)
 
         self.conv1.build(     (None,) + input_shape )
         self.conv2.build(     (None,) + tuple(np.subtract(input_shape[:-1],2)) + (32,) )
