@@ -7,9 +7,9 @@
 #                          TF_CPP_MIN_LOG_LEVEL=1 time -p src/examples/keras/tf_keras_example_mnist_cnn.py
 # KERAS_BACKEND=tensorflow TF_CPP_MIN_LOG_LEVEL=1 time -p src/examples/keras/keras_example_mnist_cnn.py
 # KERAS_BACKEND=theano THEANO_FLAGS=device=cuda0  time -p src/examples/keras/keras_example_mnist_cnn.py
-# KERAS_BACKEND=cntk                              time -p src/examples/keras/keras_example_mnist_cnn.py  # ImportError: libmpi_cxx.so.1: cannot open shared object file: No such file or directory
+# KERAS_BACKEND=cntk                              time -p src/examples/keras/keras_example_mnist_cnn.py  # ImportError: libmpi_cxx.so.1
 #
-#   Test accuracy: 99.11% |  78s =   6s/epoc + 101us/step | Using tf.keras + TensorFlow GPU backend
+#   Test accuracy: 84.19% |  68s =   5s/epoc +  87us/step | Using tf.keras + TensorFlow GPU backend
 #   Test accuracy: 99.11% |  78s =   6s/epoc + 101us/step | Using keras    + TensorFlow GPU backend
 #   Test accuracy: 99.05% |3844s = 300s/epoc +   5ms/step | Using keras    + Theano CPU backend
 #
