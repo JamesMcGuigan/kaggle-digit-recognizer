@@ -3,16 +3,20 @@
 # Trains a simple convnet on the MNIST dataset.
 #
 # DOCS claim: 99.25% test accuracy after 12 epochs |  16 seconds per epoch on a GRID K520 GPU.
-# Actual:
-#                          TF_CPP_MIN_LOG_LEVEL=1 time -p src/examples/keras/tf_keras_example_mnist_cnn.py
-# KERAS_BACKEND=tensorflow TF_CPP_MIN_LOG_LEVEL=1 time -p src/examples/keras/keras_example_mnist_cnn.py
-# KERAS_BACKEND=theano THEANO_FLAGS=device=cuda0  time -p src/examples/keras/keras_example_mnist_cnn.py
-# KERAS_BACKEND=cntk                              time -p src/examples/keras/keras_example_mnist_cnn.py  # ImportError: libmpi_cxx.so.1
+# keras actual:
+# $ KERAS_BACKEND=tensorflow TF_CPP_MIN_LOG_LEVEL=1 time -p src/examples/keras/keras_example_mnist_cnn.py
+# $ KERAS_BACKEND=theano THEANO_FLAGS=device=cuda0  time -p src/examples/keras/keras_example_mnist_cnn.py
+# $ KERAS_BACKEND=cntk                              time -p src/examples/keras/keras_example_mnist_cnn.py    # ImportError: libmpi_cxx.so.1
+#   Test accuracy: 99.11% |  78s/total -   6s/epoc - 101us/step | Using keras    + Adadelta(learning_rate=1.0)   + TensorFlow GPU backend
+#   Test accuracy: 99.05% |3844s/total - 300s/epoc -   5ms/step | Using keras    + Adadelta(learning_rate=1.0)   + Theano CPU backend
+#   Test accuracy: 84.19% |  68s/total -   5s/epoc -  87us/step | Using tf.keras + Adadelta(learning_rate=0.001) + TensorFlow GPU backend
 #
-#   Test accuracy: 84.19% |  68s =   5s/epoc +  87us/step | Using tf.keras + TensorFlow GPU backend
-#   Test accuracy: 99.11% |  78s =   6s/epoc + 101us/step | Using keras    + TensorFlow GPU backend
-#   Test accuracy: 99.05% |3844s = 300s/epoc +   5ms/step | Using keras    + Theano CPU backend
+# tf.keras:
 #
+# $ TF_CPP_MIN_LOG_LEVEL=3 time -p src/examples/keras/tf_keras_example_mnist_cnn.py  # tf.keras + Adadelta(learning_rate=0.001)
+#   Epoch 12435 - 21 hours/total - 5s/epoc - 88us/sample - loss: 0.0295 - accuracy: 0.9909 - val_loss: 0.0273 - val_accuracy: 0.9916
+#
+#   NOTE: Code exhibits (eventually garbage collected) memory leak, with python varying between 2 - 5 GB of RAM
 
 from __future__ import print_function
 
