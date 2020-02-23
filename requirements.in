@@ -20,9 +20,9 @@ tensorflow-gpu==2.1.0  # tensorflow==2.1.0 emits depreciation warnings without n
 # GPUtil
 
 ### Keras backends - src/examples/keras/keras_example_mnist_cnn.py
-keras
-cntk         # sudo apt-get install openmpi-bin
-cntk-gpu     # ImportError: libmpi_cxx.so.1
-theano>=1.0
-# pygpu      # theano GPU support - requires anaconda
-# nose       # theano required by: import theano.sandbox.cuda
+# keras
+# cntk         # sudo apt-get install openmpi-bin
+# cntk-gpu     # ImportError: libmpi_cxx.so.1
+# theano>=1.0
+## pygpu       # theano GPU support - requires anaconda
+## nose        # theano required by: import theano.sandbox.cuda
