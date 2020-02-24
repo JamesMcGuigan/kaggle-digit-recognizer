@@ -9,6 +9,7 @@ import tensorflow.keras as keras
 from pandas import DataFrame
 from sklearn.model_selection import train_test_split
 
+
 class DataSet:
     default_config = {
         "train_csv": "../../data/train.csv",
@@ -22,8 +23,8 @@ class DataSet:
 
 
     # noinspection PyDefaultArgument
-    def __init__(self, config: dict={}):
-        self.config   = dict(**self.default_config, **config)
+    def __init__(self, fraction=1, **kwargs):
+        self.config   = dict(**self.default_config, **kwargs)
         self.root_dir = os.path.dirname( os.path.abspath(__file__) )
         self.data_raw = {
             "train": pd.read_csv(path.join(self.root_dir, self.config['train_csv'])),
@@ -57,6 +58,9 @@ class DataSet:
                 data[data_key+'_Y'] = keras.utils.to_categorical( data[data_key+'_Y'], num_classes=10 )
         return data
 
+
+    def epoc_size(self):
+        return self.data['train_X'].shape[0]
 
     def input_shape(self):
         return self.data['train_X'].shape[1:]

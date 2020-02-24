@@ -13,6 +13,7 @@ cachetools==4.0.0         # via google-auth
 certifi==2019.11.28       # via kaggle, requests
 chardet==3.0.4            # via requests
 click==7.0                # via pip-tools
+cycler==0.10.0            # via matplotlib
 decorator==4.4.1          # via ipython, traitlets
 defusedxml==0.6.0         # via nbconvert
 entrypoints==0.3          # via nbconvert
@@ -21,7 +22,7 @@ google-auth-oauthlib==0.4.1  # via tensorboard
 google-auth==1.11.2       # via google-auth-oauthlib, tensorboard
 google-pasta==0.1.8       # via tensorflow, tensorflow-gpu
 grpcio==1.27.2            # via tensorboard, tensorflow, tensorflow-gpu
-h5py==2.10.0              # via keras-applications
+h5py==2.10.0              # via -r requirements.in (line 16), keras-applications
 idna==2.9                 # via requests
 importlib-metadata==1.5.0  # via jsonschema
 ipykernel==5.1.4          # via notebook
@@ -39,13 +40,15 @@ jupyterlab==1.2.6         # via -r requirements.in (line 7)
 kaggle==1.5.6             # via -r requirements.in (line 4)
 keras-applications==1.0.8  # via tensorflow, tensorflow-gpu
 keras-preprocessing==1.1.0  # via tensorflow, tensorflow-gpu
+kiwisolver==1.1.0         # via matplotlib
 markdown==3.2.1           # via tensorboard
 markupsafe==1.1.1         # via jinja2
+matplotlib==3.1.3         # via -r requirements.in (line 20)
 mistune==0.8.4            # via nbconvert
 nbconvert==5.6.1          # via notebook
 nbformat==5.0.4           # via nbconvert, notebook
 notebook==6.0.3           # via jupyterlab, jupyterlab-server
-numpy==1.18.1             # via -r requirements.in (line 5), h5py, keras-applications, keras-preprocessing, opt-einsum, pandas, scikit-learn, scipy, tensorboard, tensorflow, tensorflow-gpu
+numpy==1.18.1             # via -r requirements.in (line 5), h5py, keras-applications, keras-preprocessing, matplotlib, opt-einsum, pandas, scikit-learn, scipy, tensorboard, tensorflow, tensorflow-gpu
 oauthlib==3.1.0           # via requests-oauthlib
 opt-einsum==3.1.0         # via tensorflow, tensorflow-gpu
 packaging==20.1           # via pip-review
@@ -62,11 +65,11 @@ protobuf==3.11.3          # via tensorboard, tensorflow, tensorflow-gpu
 ptyprocess==0.6.0         # via pexpect, terminado
 pyasn1-modules==0.2.8     # via google-auth
 pyasn1==0.4.8             # via pyasn1-modules, rsa
-pydot==1.4.1              # via -r requirements.in (line 9)
+pydot==1.4.1              # via -r requirements.in (line 21)
 pygments==2.5.2           # via ipython, nbconvert
-pyparsing==2.4.6          # via packaging, pydot
+pyparsing==2.4.6          # via matplotlib, packaging, pydot
 pyrsistent==0.15.7        # via jsonschema
-python-dateutil==2.8.1    # via jupyter-client, kaggle, pandas
+python-dateutil==2.8.1    # via jupyter-client, kaggle, matplotlib, pandas
 python-slugify==4.0.0     # via kaggle
 pytz==2019.3              # via pandas
 pyzmq==18.1.1             # via jupyter-client, notebook
@@ -76,12 +79,13 @@ rsa==4.0                  # via google-auth
 scikit-learn==0.22.1      # via sklearn
 scipy==1.4.1              # via scikit-learn, tensorflow, tensorflow-gpu
 send2trash==1.5.0         # via notebook
-six==1.14.0               # via absl-py, bleach, google-auth, google-pasta, grpcio, h5py, jsonschema, kaggle, keras-preprocessing, packaging, pip-tools, protobuf, pyrsistent, python-dateutil, tensorboard, tensorflow, tensorflow-gpu, traitlets
+six==1.14.0               # via absl-py, bleach, cycler, google-auth, google-pasta, grpcio, h5py, jsonschema, kaggle, keras-preprocessing, packaging, pip-tools, protobuf, pyrsistent, python-dateutil, tensorboard, tensorflow, tensorflow-gpu, traitlets
 sklearn==0.0              # via -r requirements.in (line 8)
 tensorboard==2.1.0        # via tensorflow, tensorflow-gpu
+tensorflow-addons==0.8.2  # via -r requirements.in (line 15)
 tensorflow-estimator==2.1.0  # via tensorflow, tensorflow-gpu
-tensorflow-gpu==2.1.0     # via -r requirements.in (line 12)
-tensorflow==2.1.0         # via -r requirements.in (line 11)
+tensorflow-gpu==2.1.0     # via -r requirements.in (line 11)
+tensorflow==2.1.0         # via -r requirements.in (line 10)
 termcolor==1.1.0          # via tensorflow, tensorflow-gpu
 terminado==0.8.3          # via notebook
 testpath==0.4.4           # via nbconvert
@@ -89,6 +93,7 @@ text-unidecode==1.3       # via python-slugify
 tornado==6.0.3            # via ipykernel, jupyter-client, jupyterlab, notebook, terminado
 tqdm==4.43.0              # via kaggle
 traitlets==4.3.3          # via ipykernel, ipython, jupyter-client, jupyter-core, nbconvert, nbformat, notebook
+typeguard==2.7.1          # via tensorflow-addons
 urllib3==1.24.3           # via kaggle, requests
 wcwidth==0.1.8            # via prompt-toolkit
 webencodings==0.5.1       # via bleach

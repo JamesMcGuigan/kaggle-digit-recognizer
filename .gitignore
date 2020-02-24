@@ -14,7 +14,11 @@ __pycache__/
 venv/
 node_modules/
 
-# Data
+# Logs
+logs/
+
+
+# Data/
 #data/
 data/images/
 data/images/models/
