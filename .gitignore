@@ -1,24 +1,24 @@
-# IDE
+### IDE
 .idea/
 .DS_Store
 .ipynb_checkpoints/
 __pycache__/
 
 
-# Work In Progress
+### Work In Progress
 *.wip
 *.wip.*
 
 
-# Libraries
+### Libraries
 venv/
 node_modules/
 
-# Logs
-logs/
+### Logs
+#logs/
 
 
-# Data/
+### Data
 #data/
 data/images/
 data/images/models/
