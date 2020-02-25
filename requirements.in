@@ -1,12 +1,15 @@
 pip-tools
 pip-review
 
+### Data Science
 kaggle
 numpy                  # <1.17 prevents tensorflow-gpu <=2.1.0 warnings
 pandas
 jupyterlab
 sklearn
 
+
+### Tensoflow
 tensorflow==2.1.0      # v2.1.0 works with CUDA 10.1 | v2.0.0 works with CUDA 10.0 | https://www.tensorflow.org/install/source#tested_build_configurations
 tensorflow-gpu==2.1.0  # tensorflow==2.1.0 emits depreciation warnings without numpy<1.17
 # tf-nightly-gpu       # works with numpy==1.19
@@ -16,10 +19,14 @@ tensorflow-addons      # https://github.com/tensorflow/addons
 h5py
 
 
-# Visualization
+### Visualization
 matplotlib
 pydot
 
+
+### Tests
+nose
+pylint
 
 ### 1_fastai-transfer-learning.ipynb dependencies
 # fastai
