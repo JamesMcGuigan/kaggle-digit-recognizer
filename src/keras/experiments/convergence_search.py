@@ -189,7 +189,7 @@ def scheduler(hparams: dict, dataset: DataSet):
         return CyclicLR(
             mode      = mode[1],
             step_size = dataset.epoc_size() * (hparams['patience'] / (2.0 * whole_cycles)),
-            base_lr   = 0.001,
+            base_lr   = 0.00001,  # = e-05
             max_lr    = hparams['learning_rate']
         )
 
@@ -198,7 +198,7 @@ def scheduler(hparams: dict, dataset: DataSet):
             monitor  = 'val_loss',
             factor   = 0.5,
             patience = math.floor(math.sqrt(hparams['patience'])),  # decay sqrt() before patience
-            min_lr   = 0.001
+            min_lr   = 0.00001   # = e-05
         )
 
 
