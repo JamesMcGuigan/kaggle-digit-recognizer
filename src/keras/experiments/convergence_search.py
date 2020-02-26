@@ -5,6 +5,7 @@
 # RUN:  tensorboard --logdir ./logs/convergence_search/ --reload_multifile=true
 #
 # Results: learning_rate vs optimizer | scheduler=constant
+#   {'fraction': 1.0, 'batch_size': 128, 'patience': 10, 'learning_rate': (1.0, 0.1, 0.001), 'optimizer': <All>, 'scheduler': 'constant', 'step_size': 1}
 #   tensorboard --logdir ./logs/convergence_search/learning_rate-optimizer
 #   Best:
 #       RMSprop  + 0.001   = 0.99048 | 20 epocs
@@ -35,6 +36,9 @@
 #       RMSprop + Adamax + Nadam + Adam | quickly converge with low learning_rate=0.001
 #       Adagrad + Adadelta + SGD        | needs high learning_rate=0.1 to quickly converge - may benefit from scheduler
 #       Ftrl                            | needs learning_rate=0.1 | but random until 16 epocs, then quickly converges
+#
+# Results: optimizer vs scheduler | learning_rate=0.1
+#   {'fraction': 1.0, 'batch_size': 128, 'patience': 10, 'learning_rate': 0.1, 'optimizer': <All>, 'scheduler': <All>, 'step_size': 1}
 
 import os
 import shutil
@@ -62,9 +66,6 @@ config = {
 print("config", config)
 
 hparam_options = {
-    "fraction": hp.Discrete([
-        1.0
-    ]),
     "batch_size": hp.Discrete([
         128
     ]),
@@ -72,38 +73,33 @@ hparam_options = {
         10
     ]),
     "learning_rate": hp.Discrete([
-        # 1.0,  # Two hig
+        # 1.0,   # Too high - mostly fails to converge
         0.1,
-        0.01,
-        0.001
+        # 0.01,  # Disable for testing schedulers
+        # 0.001  # Disable for testing schedulers
     ]),
     "optimizer": hp.Discrete([
-        ### quickly converge with low learning_rate=0.001
+        ### learning_rate vs optimizer + scheduler=constant | quickly converges with low learning_rate=0.001
         "Adam",
         "Adamax",
         "Nadam",
         "RMSprop",
 
-        ### need high starting learning_rate=0.1 to quickly converge - may benefit from scheduler
+        ### learning_rate vs optimizer + scheduler=constant | needs high starting learning_rate=0.1 to quickly converge - may benefit from scheduler
         "Adadelta",
         "Adagrad",
         "SGD",
 
-        ### needs learning_rate=0.1 | but random until 16 epocs, then quickly converges
-        # "Ftrl",  # Exclude
+        ### learning_rate vs optimizer + scheduler=constant | needs learning_rate=0.1 | but random until 16 epocs, then quickly converges
+        "Ftrl",  # Exclude
     ]),
     "scheduler": hp.Discrete([
         'constant',
-        # 'linear_decay',
-        # 'plateau',
-        # 'CyclicLR_triangular',
-        # 'CyclicLR_triangular2',
-        # 'CyclicLR_exp_range'
-    ]),
-    "step_size": hp.Discrete([
-        1,
-        # 2,
-        # 8
+        'linear_decay',
+        'plateau',
+        'CyclicLR_triangular',
+        'CyclicLR_triangular2',
+        'CyclicLR_exp_range'
     ]),
 }
 
@@ -122,28 +118,29 @@ def scheduler(hparams: dict, dataset: DataSet):
         return LearningRateScheduler(lambda epocs: hparams['learning_rate'], verbose=False)
     if hparams['scheduler'] is 'linear_decay':
         return LearningRateScheduler(
-            lambda epocs: hparams['learning_rate'] * (10. / (10. + epocs / hparams['step_size'])),
+            lambda epocs: hparams['learning_rate'] * (10. / (10. + epocs)),
             verbose=False
         )
     if hparams['scheduler'].startswith('CyclicLR'):
+        # DOCS: https://www.datacamp.com/community/tutorials/cyclical-learning-neural-nets
         mode = hparams['scheduler'].split('_', 1)
         return CyclicLR(
-            mode=mode[1],
-            step_size=dataset.epoc_size() * hparams['step_size'],
-            base_lr=0.001,
-            max_lr=hparams['learning_rate']
+            mode      = mode[1],
+            step_size = dataset.epoc_size() * (hparams['patience'] / 4.0),  # allow 2 up/down cycles before patience
+            base_lr   = 0.001,
+            max_lr    = hparams['learning_rate']
         )
     if hparams['scheduler'] == 'plateau':
         return ReduceLROnPlateau(
-            monitor='val_loss',
-            factor=1.0 / hparams['step_size'],
-            patience=math.floor(hparams['patience'] / 2.0),
-            min_lr=0.001
+            monitor  = 'val_loss',
+            factor   = 0.5,
+            patience = math.floor(hparams['patience'] / 2.0),  # decay half-way before patience
+            min_lr   = 0.001
         )
 
 
 def train_test_model(log_dir, hparams: dict):
-    dataset = DataSet(fraction=hparams['fraction'])
+    dataset = DataSet(fraction=1.0)
     optimiser = getattr(tf.keras.optimizers, hparams['optimizer'])
     schedule = scheduler(hparams, dataset)
 
@@ -161,7 +158,7 @@ def train_test_model(log_dir, hparams: dict):
     history = model.fit(
         dataset.data['train_X'], dataset.data['train_Y'],
         batch_size=hparams["batch_size"],
-        epochs=150,
+        epochs=250,
         verbose=False,
         validation_data=(dataset.data["valid_X"], dataset.data["valid_Y"]),
         callbacks=[
