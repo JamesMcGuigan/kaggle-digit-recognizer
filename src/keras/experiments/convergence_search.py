@@ -86,6 +86,21 @@
 #       0.01 | Nadam    + plateau                # good validation accuracy + training loss (quick)
 #       1.0  | Adadelta + plateau                # second best training loss + LR=1
 #       1.0  | SGD      + triangular2            # baseline with LR=1
+#
+# Results: optimized_scheduler vs ml_lr | min_lr = 0.001 / 0.0001 / 0.00001
+#   tensorboard --logdir logs/convergence_search/min_lr-optimized_scheduler/           --reload_multifile=true
+#   tensorboard --logdir logs/convergence_search/min_lr-optimized_scheduler-scheduler/ --reload_multifile=true
+#   Results:
+#       plateau     | rarely gets to min_lr, so variance represents RNG differences
+#   Results (best validation accuracy):
+#       triangular  | 0.001 = SGD          | 0.0001 = Adadelta, Nadam | 0.00001 = Adagrad, Adam
+#       triangular2 | 0.001 = SGD, Adagrad | 0.0001 =                 | 0.00001 = Adadelta, Adam, Nadam
+#   Results (best validation loss):
+#       triangular  | 0.001 = SGD, Adam, Adagrad, Adadelta | 0.0001 = Nadam | 0.0001 =
+#       triangular2 | 0.001 =      Adam, Adagrad           | 0.0001 = SGD   | 0.0001 = Adadelta, Nadam
+#   Results (best training loss):
+#       triangular  | 0.001 = SGD, Adam    | 0.0001 = Adadelta, Nadam, Adagrad  | 0.00001 =
+#       triangular2 | 0.001 = SGD, Adagrad | 0.0001 = Adadelta, Adam            | 0.00001 = Nadam
 
 
 import os
@@ -113,37 +128,55 @@ config = {
 print("config", config)
 
 hparam_options = {
+    "random": hp.Discrete([1,2,3,4,5]),
     "batch_size": hp.Discrete([
         128
     ]),
     "patience": hp.Discrete([
         10
     ]),
-    "learning_rate": hp.Discrete([
-        1.0,         # Works with: Adadelta + SGD/triangular2 + Adagrad/CyclicLR + Ftrl/triangular (breaks everything else)
-        0.1,         # Adamax + Adam/Nadam/RMSprop with CyclicLR || Adagrad + triangular/plateau
-        0.01,        # Adamax + Adam/Nadam/RMSprop with CyclicLR/plateau/constant/linear_decay
-        0.001,       # ALL + constant
+    "optimized_scheduler": {
+        "Adagrad_triangular": { "learning_rate": 0.1,  "optimizer": "Adagrad",  "scheduler": "CyclicLR_triangular"  },
+        # "Adagrad_plateau":    { "learning_rate": 0.1,  "optimizer": "Adagrad",  "scheduler": "plateau"     },
+        "Adam_triangular2":   { "learning_rate": 0.01, "optimizer": "Adam",     "scheduler": "CyclicLR_triangular2" },
+        "Nadam_plateau":      { "learning_rate": 0.01, "optimizer": "Nadam",    "scheduler": "plateau"     },
+        "Adadelta_plateau":   { "learning_rate": 1.0,  "optimizer": "Adadelta", "scheduler": "plateau"     },
+        "SGD_triangular2":    { "learning_rate": 1.0,  "optimizer": "SGD",      "scheduler": "CyclicLR_triangular2" },
+    },
+    "min_lr": hp.Discrete([
+        0.001,
+        0.0001,
+        0.00001,
+        0.000001,
     ]),
-    "optimizer": hp.Discrete([
-        ### learning_rate vs optimizer + scheduler=constant | quickly converges with low learning_rate=0.001
-        "Adam",      # LR=0.1   + CyclicLR (else breaks) || LR=0.01 + constant/plateau/linear_decay
-        "Adamax",    # LR<=0.1
-        "Nadam",     # LR=0.1   + CyclicLR (else breaks) || LR=0.01 + plateau / CyclicLR / linear_decay || LR=0.001 + constant
-        "RMSprop",   # LR=0.001 + constant || LR=0.01 + CyclicLR/plateau/constant/linear_decay || LR=0.1 + CyclicLR (else breaks)
-
-        ### learning_rate vs optimizer + scheduler=constant | needs high starting learning_rate=0.1 to quickly converge - may benefit from scheduler
-        "Adadelta",  # Best with LR=1   + plateau (quick)
-        "Adagrad",   # Best with LR=0.1 + triangular (slow/best) or plateau (quick)
-        "SGD",       # Best with LR=1   + triangular2
-
-        ### learning_rate vs optimizer + scheduler=constant | needs learning_rate=0.1 | random until 16 epocs, then quickly converges
-        "Ftrl",      # Only works with: LR=0.1 + plateau/constant OR LR=1 + CyclicLR_triangular
-    ]),
+    # "learning_rate": hp.Discrete([
+    #     1.0,         # Works with: Adadelta + SGD/triangular2 + Adagrad/CyclicLR + Ftrl/triangular (breaks everything else)
+    #     0.1,         # Adamax + Adam/Nadam/RMSprop with CyclicLR || Adagrad + triangular/plateau
+    #     0.01,        # Adamax + Adam/Nadam/RMSprop with CyclicLR/plateau/constant/linear_decay
+    #     0.001,       # ALL + constant
+    # ]),
+    #
+    # "optimizer": hp.Discrete([
+    #     ### learning_rate vs optimizer + scheduler=constant | quickly converges with low learning_rate=0.001
+    #     "Adam",      # LR=0.1   + CyclicLR (else breaks) || LR=0.01 + constant/plateau/linear_decay
+    #     "Adamax",    # LR<=0.1
+    #     "Nadam",     # LR=0.1   + CyclicLR (else breaks) || LR=0.01 + plateau / CyclicLR / linear_decay || LR=0.001 + constant
+    #     "RMSprop",   # LR=0.001 + constant || LR=0.01 + CyclicLR/plateau/constant/linear_decay || LR=0.1 + CyclicLR (else breaks)
+    #
+    #     ### learning_rate vs optimizer + scheduler=constant | needs high starting learning_rate=0.1 to quickly converge - may benefit from scheduler
+    #     "Adadelta",  # Best with LR=1   + plateau (quick)
+    #     "Adagrad",   # Best with LR=0.1 + triangular (slow/best) or plateau (quick)
+    #     "SGD",       # Best with LR=1   + triangular2
+    #
+    #     ### learning_rate vs optimizer + scheduler=constant | needs learning_rate=0.1 | random until 16 epocs, then quickly converges
+    #     "Ftrl",      # Only works with: LR=0.1 + plateau/constant OR LR=1 + CyclicLR_triangular
+    # ]),
     "scheduler": hp.Discrete([
-        'constant',
-        'linear_decay',
-        'plateau',
+        # 'constant',
+        # 'linear_decay',
+        # 'plateau',
+        # 'plateau10',
+        # 'plateau_sqrt',
         'CyclicLR_triangular',
         'CyclicLR_triangular2',
         'CyclicLR_exp_range'
@@ -153,10 +186,27 @@ hparam_options = {
 
 # https://riptutorial.com/python/example/10160/all-combinations-of-dictionary-values
 def hparam_combninations(hparam_options):
+
+    def get_hparam_options_values(key):
+        if isinstance(hparam_options[key], dict):        return hparam_options[key].keys()
+        if isinstance(hparam_options[key], list):        return hparam_options[key]
+        if isinstance(hparam_options[key], hp.Discrete): return hparam_options[key].values
+
     keys = hparam_options.keys()
-    values = list(hparam_options[key].values for key in keys)
+    values = [ get_hparam_options_values(key) for key in keys ]
+
     hparams_list = [dict(zip(keys, combination)) for combination in itertools.product(*values)]  # generate combinations
     hparams_list = [dict(s) for s in set(frozenset(d.items()) for d in hparams_list)]            # unique
+
+    # Merge dictionary options into hparams_list, after generating unique combinations
+    lookup_keys = [ key for key in keys if isinstance(hparam_options[key], dict) ]
+    for index, hparams in enumerate(hparams_list):
+        for lookup_key in lookup_keys:
+            if lookup_key in hparams:
+                defaults = hparam_options[lookup_key][ hparams[lookup_key] ].copy()
+                defaults.update(hparams_list[index])
+                hparams_list[index] = defaults
+
     # random.shuffle(hparams_list)
     return hparams_list
 
@@ -168,7 +218,10 @@ def scheduler(hparams: dict, dataset: DataSet):
 
     if hparams['scheduler'] is 'linear_decay':
         return LearningRateScheduler(
-            lambda epocs: hparams['learning_rate'] * (10. / (10. + epocs)),
+            lambda epocs: max(
+                hparams['learning_rate'] * (10. / (10. + epocs)),
+                hparams['min_lr']
+            ),
             verbose=False
         )
 
@@ -189,7 +242,7 @@ def scheduler(hparams: dict, dataset: DataSet):
         return CyclicLR(
             mode      = mode[1],
             step_size = dataset.epoc_size() * (hparams['patience'] / (2.0 * whole_cycles)),
-            base_lr   = 0.00001,  # = e-05
+            base_lr   = hparams['min_lr'],
             max_lr    = hparams['learning_rate']
         )
 
@@ -197,9 +250,28 @@ def scheduler(hparams: dict, dataset: DataSet):
         return ReduceLROnPlateau(
             monitor  = 'val_loss',
             factor   = 0.5,
-            patience = math.floor(math.sqrt(hparams['patience'])),  # decay sqrt() before patience
-            min_lr   = 0.00001   # = e-05
+            patience = math.floor(hparams['patience'] / 2.0 ),
+            min_lr   = hparams['min_lr']
         )
+
+
+    if hparams['scheduler'] == 'plateau10':
+        return ReduceLROnPlateau(
+            monitor  = 'val_loss',
+            factor   = 0.1,
+            patience = math.floor(hparams['patience'] / 2.0 ),
+            min_lr   = hparams['min_lr']
+        )
+
+    if hparams['scheduler'] == 'plateau_sqrt':
+        return ReduceLROnPlateau(
+            monitor  = 'val_loss',
+            factor   = 0.5,
+            patience = math.floor(math.sqrt(hparams['patience'])),  # decay sqrt() before patience
+            min_lr   = hparams['min_lr']
+        )
+
+    print("Unknown scheduler: ", hparams)
 
 
 def train_test_model(log_dir, hparams: dict):
@@ -235,11 +307,15 @@ def train_test_model(log_dir, hparams: dict):
     print({key: value[-1] for key, value in history.history.items()})
 
 
+def hparam_options_length(hparam_options_value):
+    if isinstance(hparam_options_value, (dict,list)): return len(hparam_options_value)
+    else:                                             return len(hparam_options_value.values)
+
 def hparams_run_name(hparams: dict, hparam_options: dict) -> str:
     return "_".join([
         f"{key}={value}"
         for key, value in sorted(hparams.items())
-        if len(hparam_options[key].values) >= 2
+        if key in hparam_options and hparam_options_length(hparam_options[key]) >= 2
     ])
 
 
@@ -247,7 +323,7 @@ def hparams_logdir(hparams: dict, hparam_options: dict, log_dir: str) -> str:
     key_name = "-".join([
         f"{key}"
         for key, value in sorted(hparams.items())
-        if len(hparam_options[key].values) >= 2
+        if key in hparam_options and hparam_options_length(hparam_options[key]) >= 2
     ])
     run_name = hparams_run_name(hparams, hparam_options)
     dir_name = os.path.join(log_dir, key_name, run_name)
