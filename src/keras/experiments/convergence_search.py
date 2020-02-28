@@ -45,7 +45,7 @@
 #       0.1  | Adagrad  + triangular    / triangular2  =  0.99262 / 0.99095   | 92 /  94 epocs (slow/best)
 #       0.01 | Adagrad  + constant                     =  0.99095             | 82       epocs
 #       0.01 | Adam     + triangular2   / exp_range    =  0.99155 / 0.99107   | 24 /  20 epocs
-#       0.01 | Nadam    + plateau2      / triangular2  =  0.99143 / 0.98929   | 24       epocs
+#       0.01 | Nadam    + plateau10     / triangular2  =  0.99095 / 0.98929   | 24       epocs
 #       1.0  | Adadelta + constant      / linear_decay =  0.99060 / 0.99048   | 18 /  21 epocs
 #       0.01 | Adamax   + plateau10     / linear_decay =  0.99095 / 0.99000   | 15 /  18 epocs
 #       0.1  | Adamax   + triangular    / triangular2  =  0.99000 / 0.98905   | 22 /  25 epocs
@@ -76,17 +76,17 @@
 #       0.1  | Ftrl     + linear_decay / CyclicLR
 #       0.01 | Ftrl     + <all>
 #   Conclusions:
-#       0.1  | Adagrad + Adamax + Nadam         | work well with CyclicLR_triangular | Adagrad is best but slowest
-#       0.1/0.01 | Adamax                       | both high LR with triangular or lower LR with linear_decay / plateau2
+#       0.1  | Adagrad + Adamax + Nadam          | work well with CyclicLR_triangular | Adagrad is best but slowest
+#       0.1/0.01 | Adamax                        | both high LR with triangular or lower LR with linear_decay / plateau2
 #       0.01 | Adam/triangular + Nadam/plateau2  | work best with lower LR=0.01 but different decays
 #       0.1  | Adagrad + SGD with plateau2       | have the lowest training loss
-#       0.1  | RMSprop + Nadam + Adam           | can fail to linear_decay / plateau2 fast enough when starting with a high LR=0.1
+#       0.1  | RMSprop + Nadam + Adam            | can fail to linear_decay / plateau2 fast enough when starting with a high LR=0.1
 #   Shortlist:
 #       0.1  | Adagrad  + triangular             # best validation accuracy + loss (slow)
-#       0.1  | Adagrad  + plateau2                # best training loss (quick)
+#       0.1  | Adagrad  + plateau2               # best training loss (quick)
 #       0.01 | Adam     + triangular2            # second best validation accuracy + loss (quick)
-#       0.01 | Nadam    + plateau2                # good validation accuracy + training loss (quick)
-#       1.0  | Adadelta + plateau2                # second best training loss + LR=1
+#       0.01 | Nadam    + plateau2               # good validation accuracy + training loss (quick)
+#       1.0  | Adadelta + plateau2               # second best training loss + LR=1
 #       1.0  | SGD      + triangular2            # baseline with LR=1
 #
 # Results: optimized_scheduler vs ml_lr | min_lr = 0.001 / 0.0001 / 0.00001
@@ -100,8 +100,13 @@
 # Results: plateau2 vs plateau10 vs plateau_sqrt
 #   tensorboard --logdir logs/convergence_search/optimizer-random-scheduler/
 #   tensorboard --logdir logs/convergence_search/learning_rate-optimizer-scheduler/
+#   Specific Plateau Preferences:
+#       Nadam:   plateau10
+#       Adagrad: plateau2
+#   Otherwise:
 #       plateau10      seems to train quicker, score higher and break less optimizers
 #       plateau2_sqrt  seems to lack the required patience for best convergence
+#
 
 import os
 import re
@@ -137,13 +142,13 @@ hparam_options = {
         10
     ]),
     "optimized_scheduler": {
-        # "Adagrad_triangular": { "learning_rate": 0.1,    "optimizer": "Adagrad",  "scheduler": "CyclicLR_triangular"  },
-        "Adagrad_plateau":    { "learning_rate": 0.1,    "optimizer": "Adagrad",  "scheduler": "plateau2"      },
-        "Adam_triangular2":   { "learning_rate": 0.01,   "optimizer": "Adam",     "scheduler": "CyclicLR_triangular2" },
-        "Nadam_plateau":      { "learning_rate": 0.01,   "optimizer": "Nadam",    "scheduler": "plateau_sqrt"  },
-        "Adadelta_plateau":   { "learning_rate": 1.0,    "optimizer": "Adadelta", "scheduler": "plateau10"     },
-        "SGD_triangular2":    { "learning_rate": 1.0,    "optimizer": "SGD",      "scheduler": "CyclicLR_triangular2" },
-        "RMSprop_constant":   { "learning_rate": 0.001,  "optimizer": "RMSprop",  "scheduler": "constant"      },
+        "Adagrad_triangular": { "learning_rate": 0.1,    "optimizer": "Adagrad",  "scheduler": "triangular"  },
+        "Adagrad_plateau":    { "learning_rate": 0.1,    "optimizer": "Adagrad",  "scheduler": "plateau2"    },
+        "Adam_triangular2":   { "learning_rate": 0.01,   "optimizer": "Adam",     "scheduler": "triangular2" },
+        "Nadam_plateau":      { "learning_rate": 0.01,   "optimizer": "Nadam",    "scheduler": "plateau10"   },
+        "Adadelta_plateau":   { "learning_rate": 1.0,    "optimizer": "Adadelta", "scheduler": "plateau10"   },
+        "SGD_triangular2":    { "learning_rate": 1.0,    "optimizer": "SGD",      "scheduler": "triangular2" },
+        "RMSprop_constant":   { "learning_rate": 0.001,  "optimizer": "RMSprop",  "scheduler": "constant"    },
     },
     # "min_lr": hp.Discrete([
     #     0.001,    # 1e-03 (0.001)   - fastest, least overfitting and most accidental high-scores with enough random attempts
@@ -162,7 +167,7 @@ hparam_options = {
     #     ### learning_rate vs optimizer + scheduler=constant | quickly converges with low learning_rate=0.001
     #     "Adam",      # LR=0.1   + CyclicLR (else breaks) || LR=0.01 + constant/plateau2/linear_decay
     #     "Adamax",    # LR<=0.1
-    #     "Nadam",     # LR=0.1   + CyclicLR (else breaks) || LR=0.01 + plateau2 / CyclicLR / linear_decay || LR=0.001 + constant
+    #     "Nadam",     # LR=0.1   + CyclicLR (else breaks) || LR=0.01 + plateau10 / CyclicLR / linear_decay || LR=0.001 + constant
     #     "RMSprop",   # LR=0.001 + constant || LR=0.01 + CyclicLR/plateau2/constant/linear_decay || LR=0.1 + CyclicLR (else breaks)
     #
     #     ### learning_rate vs optimizer + scheduler=constant | needs high starting learning_rate=0.1 to quickly converge - may benefit from scheduler
@@ -173,17 +178,17 @@ hparam_options = {
     #     ### learning_rate vs optimizer + scheduler=constant | needs learning_rate=0.1 | random until 16 epocs, then quickly converges
     #     "Ftrl",      # Only works with: LR=0.1 + plateau2/constant OR LR=1 + CyclicLR_triangular
     # ]),
-    "scheduler": hp.Discrete([
-        # 'constant',
-        # 'linear_decay',
-        'plateau2',
-        'plateau2_sqrt',
-        'plateau10',
-        'plateau10_sqrt',
-        'CyclicLR_triangular',
-        'CyclicLR_triangular2',
-        # 'CyclicLR_exp_range'
-    ]),
+    # "scheduler": hp.Discrete([
+    #     # 'constant',
+    #     # 'linear_decay',
+    #     'plateau2',
+    #     'plateau2_sqrt',
+    #     'plateau10',
+    #     'plateau10_sqrt',
+    #     'CyclicLR_triangular',
+    #     'CyclicLR_triangular2',
+    #     # 'CyclicLR_exp_range'
+    # ]),
 }
 
 
