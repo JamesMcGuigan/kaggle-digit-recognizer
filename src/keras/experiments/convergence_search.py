@@ -135,54 +135,54 @@ hparam_options = {
     "patience": hp.Discrete([
         10
     ]),
-    "optimized_scheduler": {
-        "Adagrad_triangular": { "learning_rate": 0.1,    "optimizer": "Adagrad",  "scheduler": "triangular"  },
-        "Adagrad_plateau":    { "learning_rate": 0.1,    "optimizer": "Adagrad",  "scheduler": "plateau2"    },
-        "Adam_triangular2":   { "learning_rate": 0.01,   "optimizer": "Adam",     "scheduler": "triangular2" },
-        "Nadam_plateau":      { "learning_rate": 0.01,   "optimizer": "Nadam",    "scheduler": "plateau10"   },
-        "Adadelta_plateau":   { "learning_rate": 1.0,    "optimizer": "Adadelta", "scheduler": "plateau10"   },
-        "SGD_triangular2":    { "learning_rate": 1.0,    "optimizer": "SGD",      "scheduler": "triangular2" },
-        "RMSprop_constant":   { "learning_rate": 0.001,  "optimizer": "RMSprop",  "scheduler": "constant"    },
-    },
+    # "optimized_scheduler": {
+    #     "Adagrad_triangular": { "learning_rate": 0.1,    "optimizer": "Adagrad",  "scheduler": "triangular"  },
+    #     "Adagrad_plateau":    { "learning_rate": 0.1,    "optimizer": "Adagrad",  "scheduler": "plateau2"    },
+    #     "Adam_triangular2":   { "learning_rate": 0.01,   "optimizer": "Adam",     "scheduler": "triangular2" },
+    #     "Nadam_plateau":      { "learning_rate": 0.01,   "optimizer": "Nadam",    "scheduler": "plateau10"   },
+    #     "Adadelta_plateau":   { "learning_rate": 1.0,    "optimizer": "Adadelta", "scheduler": "plateau10"   },
+    #     "SGD_triangular2":    { "learning_rate": 1.0,    "optimizer": "SGD",      "scheduler": "triangular2" },
+    #     "RMSprop_constant":   { "learning_rate": 0.001,  "optimizer": "RMSprop",  "scheduler": "constant"    },
+    # },
     # "min_lr": hp.Discrete([
     #     0.001,    # 1e-03 (0.001)   - fastest, least overfitting and most accidental high-scores with enough random attempts
     #     #0.0001,
     #     0.00001,  # 1e-05 (0.00001) - preferred by SGD
     #     #0.000001,
     # ]),
-    # "learning_rate": hp.Discrete([
-    #     1.0,           # Works with: Adadelta + SGD/triangular2 + Adagrad/CyclicLR + Ftrl/triangular (breaks everything else)
-    #     0.1,           # Adamax + Adam/Nadam/RMSprop with CyclicLR || Adagrad + triangular/plateau2
-    #     0.01,          # Adamax + Adam/Nadam/RMSprop with CyclicLR/plateau2/constant/linear_decay
-    #     # 0.001,       # ALL + constant
-    # ]),
+    "learning_rate": hp.Discrete([
+        1.0,           # Works with: Adadelta + SGD/triangular2 + Adagrad/CyclicLR + Ftrl/triangular (breaks everything else)
+        0.1,           # Adamax + Adam/Nadam/RMSprop with CyclicLR || Adagrad + triangular/plateau2
+        0.01,          # Adamax + Adam/Nadam/RMSprop with CyclicLR/plateau2/constant/linear_decay
+        # 0.001,       # ALL + constant
+    ]),
     #
-    # "optimizer": hp.Discrete([
-    #     ### learning_rate vs optimizer + scheduler=constant | quickly converges with low learning_rate=0.001
-    #     "Adam",      # LR=0.1   + CyclicLR (else breaks) || LR=0.01 + constant/plateau2/linear_decay
-    #     "Adamax",    # LR<=0.1
-    #     "Nadam",     # LR=0.1   + CyclicLR (else breaks) || LR=0.01 + plateau10 / CyclicLR / linear_decay || LR=0.001 + constant
-    #     "RMSprop",   # LR=0.001 + constant || LR=0.01 + CyclicLR/plateau2/constant/linear_decay || LR=0.1 + CyclicLR (else breaks)
-    #
-    #     ### learning_rate vs optimizer + scheduler=constant | needs high starting learning_rate=0.1 to quickly converge - may benefit from scheduler
-    #     "Adadelta",  # Best with LR=1   + plateau2 (quick)
-    #     "Adagrad",   # Best with LR=0.1 + triangular (slow/best) or plateau2 (quick)
-    #     "SGD",       # Best with LR=1   + triangular2
-    #
-    #     ### learning_rate vs optimizer + scheduler=constant | needs learning_rate=0.1 | random until 16 epocs, then quickly converges
-    #     "Ftrl",      # Only works with: LR=0.1 + plateau2/constant OR LR=1 + CyclicLR_triangular
-    # ]),
-    # "scheduler": hp.Discrete([
-    #     # 'constant',
-    #     # 'linear_decay',
-    #     'plateau2',
-    #     'plateau2_sqrt',
-    #     'plateau10',
-    #     'plateau10_sqrt',
-    #     'CyclicLR_triangular',
-    #     'CyclicLR_triangular2',
-    #     # 'CyclicLR_exp_range'
-    # ]),
+    "optimizer": hp.Discrete([
+        ### learning_rate vs optimizer + scheduler=constant | quickly converges with low learning_rate=0.001
+        "Adam",      # LR=0.1   + CyclicLR (else breaks) || LR=0.01 + constant/plateau2/linear_decay
+        "Adamax",    # LR<=0.1
+        "Nadam",     # LR=0.1   + CyclicLR (else breaks) || LR=0.01 + plateau10 / CyclicLR / linear_decay || LR=0.001 + constant
+        "RMSprop",   # LR=0.001 + constant || LR=0.01 + CyclicLR/plateau2/constant/linear_decay || LR=0.1 + CyclicLR (else breaks)
+
+        ### learning_rate vs optimizer + scheduler=constant | needs high starting learning_rate=0.1 to quickly converge - may benefit from scheduler
+        "Adadelta",  # Best with LR=1   + plateau2 (quick)
+        "Adagrad",   # Best with LR=0.1 + triangular (slow/best) or plateau2 (quick)
+        "SGD",       # Best with LR=1   + triangular2
+
+        ### learning_rate vs optimizer + scheduler=constant | needs learning_rate=0.1 | random until 16 epocs, then quickly converges
+        "Ftrl",      # Only works with: LR=0.1 + plateau2/constant OR LR=1 + CyclicLR_triangular
+    ]),
+    "scheduler": hp.Discrete([
+        # 'constant',
+        # 'linear_decay',
+        'plateau2',
+        'plateau2_sqrt',
+        'plateau10',
+        'plateau10_sqrt',
+        'CyclicLR_triangular',
+        'CyclicLR_triangular2',
+        'CyclicLR_exp_range'
+    ]),
 }
 
 if __name__ == "__main__":
