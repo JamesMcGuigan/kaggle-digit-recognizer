@@ -16,12 +16,16 @@ tensorflow-gpu==2.1.0  # tensorflow==2.1.0 emits depreciation warnings without n
 # tensorflow-cpu       # breaks CUDA | fix: rm ~/.local; pip install -r requirements.in
 
 tensorflow-addons      # https://github.com/tensorflow/addons
-h5py
 
 
 ### Visualization
 matplotlib
 pydot
+
+
+### Utilities
+humanize
+h5py
 
 
 ### Tests

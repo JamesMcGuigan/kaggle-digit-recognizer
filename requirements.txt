@@ -24,6 +24,7 @@ google-auth==1.11.2       # via google-auth-oauthlib, tensorboard
 google-pasta==0.1.8       # via tensorflow, tensorflow-gpu
 grpcio==1.27.2            # via tensorboard, tensorflow, tensorflow-gpu
 h5py==2.10.0              # via -r requirements.in, keras-applications
+humanize==1.0.0           # via -r requirements.in
 idna==2.9                 # via requests
 importlib-metadata==1.5.0  # via jsonschema
 ipykernel==5.1.4          # via notebook
