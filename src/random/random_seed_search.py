@@ -34,6 +34,7 @@ best_count  = 0        # tf.math.count_nonzero(tf.equal(answers, best_guess)).nu
 kaggle_time_limit   =  20000000      # Kaggle 9 hour script timeout @ 1.5ms/unit = int(1000*60*60*9/1.5) = 21,600,000
 kaggle_search_limit = 140000000      # = Kaggle Kernel v10 Search Limit
 min_seed            = max(0, best_seed, kaggle_search_limit)
+max_seed            = kaggle_search_limit
 # max_seed  = sys.maxsize            # = 350 million years
 # max_seed  = 100000000              # = 30h
 # max_seed  = 10000000               # = 3h
@@ -49,8 +50,8 @@ max_seed    = int(round(max_seed, -(len(str(max_seed))-3)))  # round max_seed to
 ### Allow command line overrides
 parser = argparse.ArgumentParser(prog='PROG', usage='%(prog)s [options]')
 parser.add_argument('--min_seed',  type=int, default=min_seed)
-parser.add_argument('--increment', type=int, default=kaggle_time_limit)
-parser.add_argument('--max_seed',  type=int, default=0)
+parser.add_argument('--increment', type=int, default=0)
+parser.add_argument('--max_seed',  type=int, default=max_seed)
 parser.add_argument('--data_dir',  type=str, default=data_dir)
 parser.add_argument('--log_dir',   type=str, default=log_dir)
 args = parser.parse_args()
@@ -58,17 +59,15 @@ args = parser.parse_args()
 data_dir = args.data_dir
 log_dir  = args.log_dir
 
-if args.min_seed:
+if args.min_seed != min_seed:
     min_seed = args.min_seed
-else:
-    min_seed = max(min_seed, best_seed)
 
-if args.max_seed:
+if args.max_seed != max_seed:
     max_seed = args.max_seed
-else:
+
+if args.increment:
     max_seed = min_seed + args.increment
     # max_seed = int(round(max_seed, -(len(str(max_seed))-2)))  # round max_seed to 2sf
-
 
 
 ### Delete submissions: [ os.remove(file) for file in os.listdir() if file.endswith('.csv') ]

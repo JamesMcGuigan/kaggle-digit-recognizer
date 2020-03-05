@@ -77,7 +77,7 @@ for OS in UNIX WINDOWS; do
     if [[ $OS == 'UNIX' ]]; then
         pip install --upgrade pip pip-tools
         timeout 5 pip-compile || pip-compile -v  # --generate-hashes
-        pip install -r ./requirements.txt || cat ./requirements.txt | perl -p -e 's/\s*#.*$//g' | sed '/^\s*$/d' | xargs -d'\n' -L1 -t pip install
+        pip install -r ./requirements.txt || cat ./requirements.txt ./requirements.in | perl -p -e 's/\s*#.*$//g' | sed '/^\s*$/d' | xargs -d'\n' -L1 -t pip install
         pip-sync
     fi;
     if [[ $OS == 'WINDOWS' ]]; then

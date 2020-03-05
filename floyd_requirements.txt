@@ -1,0 +1,3 @@
+# DOCS: https://docs.floydhub.com/guides/jobs/installing_dependencies/
+
+humanize

@@ -1,0 +1,23 @@
+### Large Directories
+.idea
+logs
+venv
+data/*.zip
+data/sample_submission.csv
+data/test.csv
+data/train.csv
+
+### Floyd Defaults
+### Directories and files to ignore when uploading code to floyd
+.git
+.eggs
+eggs
+lib
+lib64
+parts
+sdist
+var
+*.pyc
+*.swp
+.DS_Store
+

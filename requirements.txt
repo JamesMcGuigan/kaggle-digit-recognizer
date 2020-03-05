@@ -8,84 +8,109 @@ absl-py==0.9.0            # via tensorboard, tensorflow
 appnope==0.1.0            # via ipykernel, ipython
 astor==0.8.1              # via tensorflow
 astroid==2.3.3            # via pylint
-attrs==19.3.0             # via jsonschema
+attrs==18.2.0             # via gradient, jsonschema
 backcall==0.1.0           # via ipython
 bleach==3.1.1             # via nbconvert
 cachetools==4.0.0         # via google-auth
-certifi==2019.11.28       # via kaggle, requests
-chardet==3.0.4            # via requests
-click==7.0                # via pip-tools
+certifi==2019.11.28       # via gradient-statsd, kaggle, requests
+cffi==1.14.0              # via cryptography
+chardet==3.0.4            # via gradient-statsd, requests
+click-completion==0.5.2   # via gradient, paperspace
+click-didyoumean==0.0.3   # via gradient, paperspace
+click-help-colors==0.7    # via gradient, paperspace
+click==7.0                # via click-completion, click-didyoumean, click-help-colors, gradient, paperspace, pip-tools
+colorama==0.3.9           # via gradient, halo, log-symbols, paperspace
+cryptography==2.8         # via pyopenssl, requests
+cursor==1.3.4             # via halo
 cycler==0.10.0            # via matplotlib
-decorator==4.4.1          # via ipython, traitlets
+datadog==0.34.1           # via gradient-statsd
+decorator==4.4.1          # via datadog, gradient-statsd, ipython, networkx, traitlets
 defusedxml==0.6.0         # via nbconvert
 entrypoints==0.3          # via nbconvert
+future==0.18.2            # via hyperopt
 gast==0.2.2               # via tensorflow
 google-auth-oauthlib==0.4.1  # via tensorboard
 google-auth==1.11.2       # via google-auth-oauthlib, tensorboard
 google-pasta==0.1.8       # via tensorflow
+gradient-sdk==0.0.4       # via paperspace
+gradient-statsd==1.0.1    # via paperspace
+gradient==0.6.0           # via -r requirements.in (line 8)
 grpcio==1.27.2            # via tensorboard, tensorflow
-h5py==2.10.0              # via -r requirements.in, keras-applications
-humanize==1.0.0           # via -r requirements.in
-idna==2.9                 # via requests
+h5py==2.10.0              # via -r requirements.in (line 39), keras-applications
+halo==0.0.29              # via gradient
+humanize==1.0.0           # via -r requirements.in (line 38)
+hyperopt==0.1.2           # via gradient-sdk
+idna==2.9                 # via gradient-statsd, requests
 importlib-metadata==1.5.0  # via jsonschema
 ipykernel==5.1.4          # via notebook
 ipython-genutils==0.2.0   # via nbformat, notebook, traitlets
 ipython==7.12.0           # via ipykernel
 isort==4.3.21             # via pylint
 jedi==0.16.0              # via ipython
-jinja2==2.11.1            # via jupyterlab, jupyterlab-server, nbconvert, notebook
+jinja2==2.11.1            # via click-completion, jupyterlab, jupyterlab-server, nbconvert, notebook
 joblib==0.14.1            # via scikit-learn
 json5==0.9.1              # via jupyterlab-server
 jsonschema==3.2.0         # via jupyterlab-server, nbformat
 jupyter-client==6.0.0     # via ipykernel, notebook
 jupyter-core==4.6.3       # via jupyter-client, nbconvert, nbformat, notebook
 jupyterlab-server==1.0.6  # via jupyterlab
-jupyterlab==1.2.6         # via -r requirements.in
-kaggle==1.5.6             # via -r requirements.in
+jupyterlab==1.2.6         # via -r requirements.in (line 15)
+kaggle==1.5.6             # via -r requirements.in (line 6)
 keras-applications==1.0.8  # via tensorflow
 keras-preprocessing==1.1.0  # via tensorflow
 kiwisolver==1.1.0         # via matplotlib
 lazy-object-proxy==1.4.3  # via astroid
+log-symbols==0.0.14       # via halo
 markdown==3.2.1           # via tensorboard
 markupsafe==1.1.1         # via jinja2
-matplotlib==3.1.3         # via -r requirements.in
+marshmallow==2.21.0       # via gradient
+matplotlib==3.1.3         # via -r requirements.in (line 28)
 mccabe==0.6.1             # via pylint
 mistune==0.8.4            # via nbconvert
 nbconvert==5.6.1          # via notebook
 nbformat==5.0.4           # via nbconvert, notebook
-nose==1.3.7               # via -r requirements.in
+networkx==2.4             # via hyperopt
+nose==1.3.7               # via -r requirements.in (line 33)
 notebook==6.0.3           # via jupyterlab, jupyterlab-server
-numpy==1.18.1             # via -r requirements.in, h5py, keras-applications, keras-preprocessing, matplotlib, opt-einsum, pandas, scikit-learn, scipy, tensorboard, tensorflow
+numpy==1.18.1             # via -r requirements.in (line 13), h5py, hyperopt, keras-applications, keras-preprocessing, matplotlib, opt-einsum, pandas, scikit-learn, scipy, tensorboard, tensorflow
 oauthlib==3.1.0           # via requests-oauthlib
 opt-einsum==3.1.0         # via tensorflow
 packaging==20.1           # via pip-review
-pandas==1.0.1             # via -r requirements.in
+pandas==1.0.1             # via -r requirements.in (line 14)
 pandocfilters==1.4.2      # via nbconvert
+paperspace==0.2.0         # via -r requirements.in (line 7)
 parso==0.6.1              # via jedi
 pexpect==4.8.0            # via ipython
 pickleshare==0.7.5        # via ipython
-pip-review==1.0           # via -r requirements.in
-pip-tools==4.5.0          # via -r requirements.in
+pip-review==1.0           # via -r requirements.in (line 2)
+pip-tools==4.5.0          # via -r requirements.in (line 1)
+progressbar2==3.50.0      # via gradient, paperspace
 prometheus-client==0.7.1  # via notebook
-prompt-toolkit==3.0.3     # via ipython
+prompt-toolkit==2.0.10    # via gradient, ipython
 protobuf==3.11.3          # via tensorboard, tensorflow
 ptyprocess==0.6.0         # via pexpect, terminado
 pyasn1-modules==0.2.8     # via google-auth
 pyasn1==0.4.8             # via pyasn1-modules, rsa
-pydot==1.4.1              # via -r requirements.in
+pycparser==2.20           # via cffi
+pydot==1.4.1              # via -r requirements.in (line 29)
 pygments==2.5.2           # via ipython, nbconvert
-pylint==2.4.4             # via -r requirements.in
+pylint==2.4.4             # via -r requirements.in (line 34)
+pymongo==3.10.1           # via gradient-sdk, hyperopt
+pyopenssl==19.1.0         # via requests
 pyparsing==2.4.6          # via matplotlib, packaging, pydot
 pyrsistent==0.15.7        # via jsonschema
 python-dateutil==2.8.1    # via jupyter-client, kaggle, matplotlib, pandas
 python-slugify==4.0.0     # via kaggle
+python-utils==2.4.0       # via progressbar2
 pytz==2019.3              # via pandas
+pyyaml==5.3               # via gradient
 pyzmq==19.0.0             # via jupyter-client, notebook
 requests-oauthlib==1.3.0  # via google-auth-oauthlib
-requests==2.23.0          # via kaggle, requests-oauthlib, tensorboard
+requests-toolbelt==0.9.1  # via gradient, paperspace
+requests[security]==2.23.0  # via datadog, gradient, gradient-statsd, kaggle, paperspace, requests-oauthlib, requests-toolbelt, tensorboard
 rsa==4.0                  # via google-auth
 scikit-learn==0.22.1      # via sklearn
-scipy==1.4.1              # via scikit-learn, tensorflow
+scipy==1.4.1              # via hyperopt, scikit-learn, tensorflow
 send2trash==1.5.0         # via notebook
 six==1.14.0               # via absl-py, astroid, bleach, cycler, google-auth, google-pasta, grpcio, h5py, jsonschema, kaggle, keras-preprocessing, packaging, pip-tools, protobuf, pyrsistent, python-dateutil, tensorboard, tensorflow, traitlets
 sklearn==0.0              # via -r requirements.in
@@ -95,17 +120,18 @@ tensorflow-gpu==2.1.0     # via -r requirements.in
 tensorflow==2.1.0         # via -r requirements.in
 termcolor==1.1.0          # via tensorflow
 terminado==0.8.3          # via notebook
+terminaltables==3.1.0     # via gradient, paperspace
 testpath==0.4.4           # via nbconvert
 text-unidecode==1.3       # via python-slugify
 tornado==6.0.3            # via ipykernel, jupyter-client, jupyterlab, notebook, terminado
-tqdm==4.43.0              # via kaggle
+tqdm==4.43.0              # via hyperopt, kaggle
 traitlets==4.3.3          # via ipykernel, ipython, jupyter-client, jupyter-core, nbconvert, nbformat, notebook
 typed-ast==1.4.1          # via astroid
-urllib3==1.24.3           # via kaggle, requests
+urllib3==1.24.3           # via gradient-statsd, kaggle, requests
 wcwidth==0.1.8            # via prompt-toolkit
 webencodings==0.5.1       # via bleach
 werkzeug==1.0.0           # via tensorboard
-wheel==0.34.2             # via tensorboard, tensorflow
+wheel==0.34.2             # via gradient-sdk, tensorboard, tensorflow
 wrapt==1.11.2             # via astroid, tensorflow
 zipp==3.0.0               # via importlib-metadata
 

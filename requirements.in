@@ -1,8 +1,15 @@
 pip-tools
 pip-review
 
-### Data Science
+
+### Hosting
 kaggle
+paperspace
+gradient
+# floyd-cli            # incompatable click version with pip-tools + gradient
+
+
+### Data Science
 numpy                  # <1.17 prevents tensorflow-gpu <=2.1.0 warnings
 pandas
 jupyterlab
