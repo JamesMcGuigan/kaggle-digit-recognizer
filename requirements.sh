@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Utility script to automate python virtualenv creation/update from ./requirements.in 
+# Utility script to automate python virtualenv creation/update from ./requirements.in
 # Input:  ./requirements.in
 # Output: ./requirements.txt + ./venv/ + ./venv_windows/
 #
@@ -23,7 +23,7 @@ for OS in UNIX WINDOWS; do
         fi
         if [[ $PYTHON_VERSION == 3 ]]; then
             # Ensure Ubuntu dependencies are installed
-            if [[ `command -v apt` ]]; then for PACKAGE in python3 python3-pip python3-venv; do
+            if [[ `command -v dpkg` ]]; then for PACKAGE in python3 python3-pip python3-venv; do
               if [[ ! `dpkg -l | grep -w $PACKAGE` ]]; then sudo apt install $PACKAGE; fi;
             done; fi;
 
@@ -77,7 +77,7 @@ for OS in UNIX WINDOWS; do
     if [[ $OS == 'UNIX' ]]; then
         pip install --upgrade pip pip-tools
         timeout 5 pip-compile || pip-compile -v  # --generate-hashes
-        pip install -r ./requirements.txt
+        pip install -r ./requirements.txt || cat ./requirements.txt | perl -p -e 's/\s*#.*$//g' | sed '/^\s*$/d' | xargs -d'\n' -L1 -t pip install
         pip-sync
     fi;
     if [[ $OS == 'WINDOWS' ]]; then
