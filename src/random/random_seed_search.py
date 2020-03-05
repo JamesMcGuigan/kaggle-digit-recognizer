@@ -5,16 +5,18 @@
 now, thanks to the Internet, we know that is not true."
 - Robert Wilensky
 """
-
+import argparse
 import os
+import time
 
 import humanize
 import pandas as pd
 import tensorflow as tf
-import time
 
 os.environ['TF_DETERMINISTIC_OPS'] = '1'
 
+
+### Set Defaults
 data_dir = './data'
 log_dir  = './submissions/random_seed_search'
 # data_dir = '../input/minst-answers'
@@ -29,8 +31,9 @@ best_seed   = 45576972 # CPU
 best_guess  = None     # tf.random.uniform((answers_size,), minval=0, maxval=9, dtype=tf.dtypes.int32, seed=best_seed)
 best_count  = 0        # tf.math.count_nonzero(tf.equal(answers, best_guess)).numpy()
 
-kaggle_time_limit = int(1000*60*60*9/1.5)  # = Kaggle 9 hour script timeout @ 1.5ms/unit
-min_seed    = max(0, best_seed)
+kaggle_time_limit   =  20000000      # Kaggle 9 hour script timeout @ 1.5ms/unit = int(1000*60*60*9/1.5) = 21,600,000
+kaggle_search_limit = 140000000      # = Kaggle Kernel v10 Search Limit
+min_seed            = max(0, best_seed, kaggle_search_limit)
 # max_seed  = sys.maxsize            # = 350 million years
 # max_seed  = 100000000              # = 30h
 # max_seed  = 10000000               # = 3h
@@ -41,6 +44,32 @@ min_seed    = max(0, best_seed)
 min_seed    = 50000000               # Kaggle Kernel v6 Search Limit
 max_seed    = max(min_seed, best_seed) + kaggle_time_limit
 max_seed    = int(round(max_seed, -(len(str(max_seed))-3)))  # round max_seed to 2sf
+
+
+### Allow command line overrides
+parser = argparse.ArgumentParser(prog='PROG', usage='%(prog)s [options]')
+parser.add_argument('--min_seed',  type=int, default=min_seed)
+parser.add_argument('--increment', type=int, default=kaggle_time_limit)
+parser.add_argument('--max_seed',  type=int, default=0)
+parser.add_argument('--data_dir',  type=str, default=data_dir)
+parser.add_argument('--log_dir',   type=str, default=log_dir)
+args = parser.parse_args()
+
+data_dir = args.data_dir
+log_dir  = args.log_dir
+
+if args.min_seed:
+    min_seed = args.min_seed
+else:
+    min_seed = max(min_seed, best_seed)
+
+if args.max_seed:
+    max_seed = args.max_seed
+else:
+    max_seed = min_seed + args.increment
+    # max_seed = int(round(max_seed, -(len(str(max_seed))-2)))  # round max_seed to 2sf
+
+
 
 ### Delete submissions: [ os.remove(file) for file in os.listdir() if file.endswith('.csv') ]
 def submission(max_seed, best_seed, best_guess, best_count):
@@ -91,6 +120,7 @@ if __name__ == "__main__":
     timer_start = time.time()
 
     for seed in found_seeds:
+        if seed > max_seed: break
         while print_seed < seed: increment_print_seed()
         test_seed(seed)
         test_seed(print_seed)  # == submission(seed)
@@ -101,4 +131,5 @@ if __name__ == "__main__":
     submission(max_seed, best_seed, best_guess, best_count)
     time_taken = time.time() - timer_start
     time_unit  = time_taken / (max_seed-min_seed)
+    print(f'Random Seed Search: {humanize.intcomma(min_seed)} -> {humanize.intcomma(max_seed)}')
     print(f'Finished in {round(time_taken,2)}s - {round(time_unit*1000,2)}ms/unit')  # 1.21ms/unit CPU | 1.32ms/unit GPU | 1.19/ms TPU
