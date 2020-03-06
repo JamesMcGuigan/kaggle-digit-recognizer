@@ -14,15 +14,21 @@ floyd delete  $ID
 ```
 
 ```bash
+floyd run -m "random_seed_search: 0:2000" \
+    "python3 ./src/random/random_seed_search.py --min_seed=0    --increment=1000 --method=numpy &" \
+    "python3 ./src/random/random_seed_search.py --min_seed=1000 --increment=1000 --method=numpy &" \
+    "jobs; wait %2 %3; exit"       
+```
+```bash
 START=160000000
    INC=10000000
 for i in `seq 0 6`; do
     N1=`echo "$START + $INC * ($i    )" | bc`
     N2=`echo "$START + $INC * ($i + 1)" | bc`
     floyd run -m "random_seed_search: $N1:$N2" \
-        "python3 ./src/random/random_seed_search.py --min_seed=$N1 --increment=$INC &" \
-        "python3 ./src/random/random_seed_search.py --min_seed=$N2 --increment=$INC &" \
-        "wait"       
+        "python3 ./src/random/random_seed_search.py --min_seed=$N1 --increment=$INC --method=numpy &" \
+        "python3 ./src/random/random_seed_search.py --min_seed=$N2 --increment=$INC --method=numpy &" \
+        "jobs; wait %2 %3; exit;"       
 done
 ```
 - https://www.floydhub.com/jamesmcguigan/projects/randomseedsearch/
