@@ -27,6 +27,13 @@ done
 ```
 - https://www.floydhub.com/jamesmcguigan/projects/randomseedsearch/
 
+View Logs
+```
+floyd status | grep random_seed_search | grep -v failed | awk1 |      
+    xargs -L1 -P0 -t timeout 5 floyd logs 2> /dev/null |      
+    grep Found | sed 's/^.*-//' | sort -n -k5 | uniq 
+```
+
 
 # Gradient Paperspace
 
