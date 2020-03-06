@@ -20,14 +20,18 @@ floyd run -m "random_seed_search: 0:2000" \
     "jobs; wait %2 %3; exit"       
 ```
 ```bash
-START=160000000
+ START=10000000
+   END=1000000000
    INC=10000000
-for i in `seq 0 6`; do
+METHOD='numpy'   
+for i in `seq 0 2 100`; do
     N1=`echo "$START + $INC * ($i    )" | bc`
     N2=`echo "$START + $INC * ($i + 1)" | bc`
-    floyd run -m "random_seed_search: $N1:$N2" \
-        "python3 ./src/random/random_seed_search.py --min_seed=$N1 --increment=$INC --method=numpy &" \
-        "python3 ./src/random/random_seed_search.py --min_seed=$N2 --increment=$INC --method=numpy &" \
+    N3=`echo "$START + $INC * ($i + 2)" | bc`    
+    if [[ $N1 -ge $END ]]; then break; fi; 
+    floyd run -m "random_seed_search - $METHOD - $N1:$N3" \
+        "python3 ./src/random/random_seed_search.py --min_seed=$N1 --increment=$INC --method=$METHOD &" \
+        "python3 ./src/random/random_seed_search.py --min_seed=$N2 --increment=$INC --method=$METHOD &" \
         "jobs; wait %2 %3; exit;"       
 done
 ```
@@ -35,7 +39,7 @@ done
 
 View Logs
 ```
-floyd status | grep random_seed_search | grep -v failed | awk1 |      
+floyd status | grep random_seed_search | grep numpy | grep -v failed | awk1 |      
     xargs -L1 -P0 -t timeout 5 floyd logs 2> /dev/null |      
     grep Found | sed 's/^.*-//' | sort -n -k5 | uniq 
 ```
