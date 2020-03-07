@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # Source: https://www.kaggle.com/jamesmcguigan/minst-random-seed-search
+# Github: https://github.com/JamesMcGuigan/kaggle-digit-recognizer/blob/master/src/random/random_seed_search.py
 # DOCs: running to seed 1 billion on FloydHub:
 #         https://github.com/JamesMcGuigan/kaggle-digit-recognizer/blob/master/README_CLOUD.md
 """
