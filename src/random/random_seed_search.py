@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 # Source: https://www.kaggle.com/jamesmcguigan/minst-random-seed-search
+# DOCs: running to seed 1 billion on FloydHub:
+#         https://github.com/JamesMcGuigan/kaggle-digit-recognizer/blob/master/README_CLOUD.md
 """
 "We've heard that a million monkeys at a million keyboards could produce the complete works of Shakespeare;
 now, thanks to the Internet, we know that is not true."
@@ -43,14 +45,14 @@ args = parser.parse_args()
 seeds_found = {
     'tf.Generator': [ 0 ],
     'tf':           [ 558, 9322, 25815, 11328613, 45576972, ],
-    'numpy':        [ 973, 9501, 184605, 1258741 ],
+    'numpy':        [ 973, 9501, 184605, 1258741, 27940017, 82427980, 360336750 ],
     'python':       [ 0 ]
 }
 seed_search_limit = {
-    'tf.Generator':  0,
-    'tf':    300000000,
-    'numpy':  10000000,
-    'python':        0,
+    'tf.Generator':    0,
+    'tf':      110000000,
+    'numpy':  1000000000,
+    'python':          0,
 
 }
 best_seed   = 0        # CPU

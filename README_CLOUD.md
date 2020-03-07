@@ -8,6 +8,7 @@ Config:
 
 Execute:
 ```
+floyd init jamesmcguigan/randomseedsearch
 floyd status
 floyd stop    $ID
 floyd delete  $ID
@@ -39,9 +40,29 @@ done
 
 View Logs
 ```
-floyd status | grep random_seed_search | grep numpy | grep -v failed | awk1 |      
+# This works upto until you have more than 25 job ids
+floyd status | grep random_seed_search | grep -v failed | grep numpy | awk '{ print $1 }' |      
     xargs -L1 -P0 -t timeout 5 floyd logs 2> /dev/null |      
-    grep Found | sed 's/^.*-//' | sort -n -k5 | uniq 
+    grep Found | sed 's/^.*-//' | sort -n -k5 | uniq
+
+
+# floyd status only returns the last 25 jobs, so downloading 99 logs requires a bit more creativity
+JOBS_NP=$(
+    seq 0 100 | xargs -I{} echo jamesmcguigan/projects/randomseedsearch/{} |
+        xargs -L1 -P0 -t floyd status 2> /dev/null | grep numpy | grep -v failed | awk '{ print $1 }' 
+);
+JOBS_TF=$(
+    seq 0 100 | xargs -I{} echo jamesmcguigan/projects/randomseedsearch/{} |
+        xargs -L1 -P0 -t floyd status 2> /dev/null | grep tf | grep -v failed | awk '{ print $1 }' 
+);
+echo $JOBS_NP | xargs -d' ' -L1 -P0  timeout 60 floyd logs 2> /dev/null |      
+    grep Found | sed 's/^.*-//' | sort -n -k9 | uniq    
+
+echo $JOBS_TF | xargs -d' ' -L1 -P0 timeout 60 floyd logs 2> /dev/null |      
+    grep Found | sed 's/^.*-//' | sort -n -k9 | uniq    
+
+
+ 
 ```
 
 
