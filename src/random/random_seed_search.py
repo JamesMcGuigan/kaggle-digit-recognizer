@@ -40,7 +40,7 @@ parser.add_argument('--data_dir',  type=str, default=data_dir)
 parser.add_argument('--log_dir',   type=str, default=log_dir)
 parser.add_argument('--method',    type=str, default='numpy', help='numpy | tf | tf.Generator | python')
 parser.add_argument('--auto',      action='store_true', help='continue from best_seed')
-args = parser.parse_args()
+args, unknown = parser.parse_known_args()  # Ignore extra CLI args passed in by Kaggle
 
 
 seeds_found = {
