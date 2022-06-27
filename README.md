@@ -60,7 +60,7 @@ Keras is a lower level library than fastai.
 ```
 CUDA_VISIBLE_DEVICES=""   # run with CPU instead of GPU
 PYTHONPATH='.'            # needed for running local code 
-time -p python3 src/keras/examples/keras_example_mnist_cnn.py 
+time -p python3 src/examples/keras/keras_example_mnist_cnn.py 
 Test loss: 0.6942943648338318
 Test accuracy: 0.8384
 ```
@@ -70,9 +70,13 @@ Initial benchmark implementation works as a proof of concept.
 but running the code locally only produces a score of 83.84%
 
 Timings:
-- 2011 Macbook Pro CPU = 89s/epoc = 1.5ms/sample = 1070s
-- 2019 Razer Blade CPU = 36s/epoc = 605us/sample =  443s ( 2.4x improvement over OSX)
-- GeForce GTX 1060 GPU =  5s/epoc =  85us/sample =   66s ( 6.7x improvement over CPU)
+- keras + Adadelta
+  - 2011 MacbookPro CPU (i7 x 4 @ 2.4GHz) = 89s/epoc = 1.5ms/sample = 1070s
+  - 2017 Razer CPU (i7-7700HQ x 4 @ 3.8GHz) = 36s/epoc = 605us/sample = 443s ( 2.4x improvement over OSX)
+  - GeForce GTX 1060 GPU =  5s/epoc =  85us/sample =   66s (6.7x improvement over CPU)
+- tf.keras + rmsprop 
+  - 2020 Apple M1 GPU    = 18s/epoc =  38us/sample =  213s (3.2x slower than GTX 1060 | 2x faster than Razer i7) 
+  
 
 ### Tensorflow Keras Example Syntax
 ```

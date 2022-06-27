@@ -20,6 +20,7 @@ node_modules/
 
 ### Data
 #data/
+data/digit-recognizer.zip
 data/images/
 data/images/models/
 data/images/test/

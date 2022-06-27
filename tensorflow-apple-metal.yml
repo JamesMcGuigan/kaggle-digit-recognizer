@@ -1,0 +1,36 @@
+# Source: https://raw.githubusercontent.com/jeffheaton/t81_558_deep_learning/master/tensorflow-apple-metal.yml
+# DOCS:   https://developer.apple.com/metal/tensorflow-plugin/
+# conda env create -n miniforge -f tensorflow-apple-metal.yml
+name: tensorflow
+ 
+dependencies:
+    - python=3.9
+    - pip>=19.0
+    - jupyter
+    - apple::tensorflow-deps  # current ==2.9.0 | was ==2.5.0
+    - scikit-learn
+    - scipy
+    - pandas
+    - pandas-datareader
+    - matplotlib
+    - pillow
+    - tqdm
+    - requests
+    - h5py
+    - pyyaml
+    - flask
+    - boto3
+    - pip:
+        - tensorflow-macos  # current ==2.9.2 | was ==2.5.0
+        - tensorflow-metal  # current ==0.5.0 | was ==0.1.2
+        - bayesian-optimization
+        - gym
+        - kaggle
+        - torch
+        - torchvision
+        - torchaudio
+        - wandb
+        - tqdm
+        - transformers
+        - datasets
+        
